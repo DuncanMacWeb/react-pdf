@@ -8,6 +8,10 @@ class View extends Base {
   async render() {
     this.drawBackgroundColor();
 
+    if (typeof this.props.render === 'function') {
+      this.props.render(this.root);
+    }
+
     await this.renderChildren();
   }
 }
