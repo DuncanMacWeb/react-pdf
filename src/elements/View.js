@@ -15,6 +15,9 @@ class View extends Base {
     this.applyTransformations();
     this.drawBackgroundColor();
     this.drawBorders();
+    if (typeof this.props.render === 'function') {
+      this.props.render(this.root);
+    }
     await this.renderChildren();
     if (this.props.debug) this.debug();
     this.root.instance.restore();
