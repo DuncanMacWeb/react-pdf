@@ -37,6 +37,15 @@
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-reconciler": "^0.20.4",
+    "blob-to-buffer": "^1.2.8",
+    "hyphen": "^1.1.1",
+    "jpegasus": "^1.9.54",
+    "lodash.groupby": "^4.6.0",
+    "lodash.isfunction": "^3.0.9",
+    "lodash.merge": "^4.6.1",
+    "lodash.pick": "^4.4.0",
+    "lodash.topairsin": "^4.3.0",
+    "to-arraybuffer": "^1.0.1",
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "devDependencies": {
