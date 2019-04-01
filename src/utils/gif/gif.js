@@ -3,9 +3,8 @@
 import jpegasus from 'jpegasus';
 import toArrayBuffer from 'to-arraybuffer';
 import toBufferCb from 'blob-to-buffer';
-import sharp from 'sharp';
-import JPEG from './jpeg';
-import PNG from './png';
+import JPEG from '../jpeg';
+import renderServerGIF from './server';
 
 const toBuffer = blob =>
   new Promise((resolve, reject) =>
@@ -20,8 +19,7 @@ const renderGIF = async data => {
   }
 
   if (!BROWSER) {
-    const pngBuffer = await sharp(data).toBuffer();
-    return new PNG(pngBuffer);
+    return renderServerGIF(data);
   }
 
   const jpegBlob = await jpegasus.compress(
