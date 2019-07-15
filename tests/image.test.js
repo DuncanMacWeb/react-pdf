@@ -4,6 +4,9 @@ import path from 'path';
 import root from './utils/dummyRoot';
 import Page from '../src/elements/Page';
 import Image from '../src/elements/Image';
+import Text from '../src/elements/Text';
+import TextInstance from '../src/elements/TextInstance';
+import View from '../src/elements/View';
 import warning from '../src/utils/warning';
 import {
   IMAGE_CACHE,
@@ -208,6 +211,33 @@ describe('Image', () => {
     expect(image.image.data).toBeTruthy();
     expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render inline image', async () => {
+    const view = new View(dummyRoot, {});
+    const page = new Page(dummyRoot, {});
+    const img = new Image(dummyRoot, {
+      src: { data: localJPGImage, format: 'jpg' },
+    });
+    const text = new Text(dummyRoot, { style: { textAlign: 'left' } });
+    const textInstance = new TextInstance(dummyRoot, img);
+
+    // Simulate fetch successful loading
+    const imgFetch = jest.fn(() => {
+      img.image = { data: { width: 10, height: 10 } };
+    });
+
+    img.fetch = imgFetch;
+
+    view.appendChild(page);
+    text.appendChild(textInstance);
+    page.appendChild(text);
+
+    await view.render();
+
+    expect(img.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(img.image.data);
   });
 
   test('Should not render a local image from a file in an unsafe path', async () => {
