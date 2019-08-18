@@ -5,7 +5,7 @@ import domNodeToReactComponentTree from './domNodeToComponentTree';
 import createPdfElement from './createPdfElement';
 
 const HREF =
-  'http://www.local.sdfe.sciencedirect.com:5107/topics/neuroscience/sanger-sequencing';
+  '../topic-page/static/protocols-plus/neuroscience_sanger-sequencing.html';
 
 const HtmlPdfWraper = ({ node, global }) => {
   console.log(node.outerHTML);
@@ -30,7 +30,7 @@ const loadDomFromHtml = (href, { outputConsole = console, ...options } = {}) =>
   new Promise((resolve, reject) => {
     const virtualConsole = new jsdom.VirtualConsole();
     virtualConsole.sendTo(outputConsole);
-    const dom = JSDOM.fromURL(href, {
+    const dom = JSDOM.fromFile(href, {
       ...options,
       beforeParse(window) {
         window.addEventListener('load', () => resolve(dom));

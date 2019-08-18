@@ -2,87 +2,63 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image } from '../../node';
-import styled, { css } from '@react-pdf/styled-components';
+import { View, Text, Link, Image } from '../../node';
 
-export const cssColorDarkBackground = '#2e2e2e';
-export const cssColorElsevierOrange = '#e9711c';
-export const cssColorWhite = css`
-  color: white;
-`;
-export const cssColorLinkOnDarkBackground = css`
-  color: #00a1ce;
-`;
-export const cssColorLinkOnLightBackground = css`
-  color: #0c7dbb;
-`;
-export const cssColorTextOnLightBackground = css`
-  color: #2e2e2e;
-`;
+export const cssColorWhite = { color: 'white' };
+export const cssColorLinkOnDarkBackground = { color: '#00A1CE' };
+export const cssColorLinkOnLightBackground = { color: '#0c7dbb' };
+export const cssColorTextOnLightBackground = { color: '#2e2e2e' };
 
-export const cssFontSansRegular = css`
-  font-family: sans-serif;
-`;
-export const cssFontSansBold = css`
-  font-family: sans-serif;
-  font-weight: bold;
-`;
-export const cssFontSansItalic = css`
-  font-family: sans-serif;
-  font-style: italic;
-`;
-export const cssFontSansBoldItalic = css`
-  font-family: sans-serif;
-  font-weight: bold;
-  font-style: italic;
-`;
-export const cssFontSerifRegular = css`
-  font-family: sans-serif;
-`;
-export const cssFontSerifBold = css`
-  font-family: sans-serif;
-  font-weight: bold;
-`;
-export const cssFontSerifItalic = css`
-  font-family: sans-serif;
-  font-style: italic;
-`;
-export const cssFontSerifBoldItalic = css`
-  font-family: sans-serif;
-  font-weight: bold;
-  font-style: italic;
-`;
+export const cssFontSansRegular = {
+  fontFamily: 'sans-serif',
+};
+export const cssFontSansBold = {
+  fontFamily: 'sans-serif',
+  fontWeight: 'bold',
+};
+export const cssFontSansItalic = {
+  fontFamily: 'sans-serif',
+  fontStyle: 'italic',
+};
+export const cssFontSansBoldItalic = {
+  fontFamily: 'sans-serif',
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+};
+export const cssFontSerifRegular = {
+  fontFamily: 'sans-serif',
+};
+export const cssFontSerifBold = {
+  fontFamily: 'sans-serif',
+  fontWeight: 'bold',
+};
+export const cssFontSerifItalic = {
+  fontFamily: 'sans-serif',
+  fontStyle: 'italic',
+};
+export const cssFontSerifBoldItalic = {
+  fontFamily: 'sans-serif',
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+};
 
-export const cssFontSizeBodyText = css`
-  font-size: 12pt;
-`;
-export const cssFontSizeTableText = css`
-  font-size: 10pt;
-`;
-export const cssFontSizeSuperSubscript = css`
-  font-size: 8pt;
-`;
+export const cssFontSizeBodyText = { fontSize: '12pt' };
+export const cssFontSizeTableText = { fontSize: '10pt' };
+export const cssFontSizeSuperSubscript = { fontSize: '8pt' };
 
-export const cssSnippetsLeftMargin = '90pt';
-export const cssSnippetsRightMargin = '100pt';
-export const cssMarginBodyText = css`
-  margin: 0 0 8pt 0;
-`;
+export const cssBodyTextStyles = {
+  ...cssFontSizeBodyText,
+  lineHeight: '1.5',
+  ...cssColorTextOnLightBackground,
+};
 
-export const cssBodyTextStyles = css`
-  ${cssFontSizeBodyText}
-  line-height: 1.5;
-  ${cssMarginBodyText}
-  ${cssColorTextOnLightBackground}
-`;
+export const cssBannerTitleText = {
+  ...cssFontSansRegular,
+  fontSize: '12pt',
+  lineHeight: '1.5',
+};
 
-export const cssBannerTitleText = css`
-  ${cssFontSansRegular}
-  font-size: 12pt;
-  line-height: 1.5;
-`;
-
-const direction = ({ direction = 'row' }) => direction; // eslint-disable-line no-shadow
+const directionToFlexDirection = ({ direction = 'row' }) => direction; // eslint-disable-line no-shadow
 // eslint-disable-next-line
 const alignToFlexAlignment = ({ align = 'flex-start' }) =>
   align === 'right' || align === 'bottom'
@@ -97,149 +73,253 @@ const justifyToFlexAlignment = ({ justify = 'flex-start' }) =>
     : justify === 'left' || justify === 'top'
     ? 'flex-start'
     : justify;
-export const FlexContainer = styled.View`
-  display: flex;
-  flex-direction: ${direction};
-  align-items: ${alignToFlexAlignment}
-  justify-content: ${justifyToFlexAlignment};
-  max-width: 100%;
-  width: 100%;
-`;
-export const cssMarginMajorHeading = css`
-  margin: 18pt 0 12pt 0;
-`;
-export const cssMarginMinorHeading = css`
-  margin: 12pt 0 8pt 0;
-`;
+export const FlexContainer = ({
+  direction,
+  align,
+  justify,
+  children,
+  style,
+  ...props
+}) => (
+  <View
+    {...props}
+    style={{
+      display: 'flex',
+      flexDirection: directionToFlexDirection(direction),
+      alignItems: alignToFlexAlignment(align),
+      justifyContent: justifyToFlexAlignment(justify),
+      maxWidth: '100%',
+      width: '100%',
+      ...style,
+    }}
+  >
+    {children}
+  </View>
+);
+export const cssMarginMajorHeading = { margin: '18pt 0 12pt 0' };
+export const cssMarginMinorHeading = { margin: '12pt 0 8pt 0' };
 
-export const cssFontSizeHeading1 = css`
-  font-size: 24pt;
-`;
-export const cssFontSizeHeading2 = css`
-  font-size: 18pt;
-`;
-export const cssFontSizeHeading3 = css`
-  font-size: 16pt;
-`;
-export const cssFontSizeHeading4 = css`
-  font-size: 14pt;
-`;
-export const cssFontSizeHeading5 = css`
-  font-size: 12pt;
-`;
-export const cssFontSizeHeading6 = css`
-  font-size: 10pt;
-`;
-export const cssLineHeightHeading = css`
-  line-height: 1.5;
-`;
+export const cssFontSizeHeading1 = { fontSize: '24pt' };
+export const cssFontSizeHeading2 = { fontSize: '18pt' };
+export const cssFontSizeHeading3 = { fontSize: '16pt' };
+export const cssFontSizeHeading4 = { fontSize: '14pt' };
+export const cssFontSizeHeading5 = { fontSize: '12pt' };
+export const cssFontSizeHeading6 = { fontSize: '10pt' };
+export const cssLineHeightHeading = { lineHeight: '1.5' };
 
-export const BodyText = styled.Text`
-  ${cssFontSansRegular}
-  ${cssBodyTextStyles}
-`;
+export const BodyText = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssBodyTextStyles,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const BodyTextItalic = styled.Text`
-  ${cssFontSansItalic}
-  ${cssBodyTextStyles}
-`;
+export const BodyTextItalic = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansItalic,
+      ...cssBodyTextStyles,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const BodyTextBold = styled.Text`
-  ${cssFontSansBold}
-  ${cssBodyTextStyles}
-`;
+export const BodyTextBold = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansBold,
+      ...cssBodyTextStyles,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const BodyTextLink = styled.Link`
-  ${cssFontSansRegular}
-  ${cssFontSizeBodyText}
-  ${cssColorLinkOnLightBackground}
-  text-decoration: none;
-  text-decoration-color: white;
-`;
+export const BodyTextLink = ({ children, style, ...props }) => (
+  <Link
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssFontSizeBodyText,
+      ...cssColorLinkOnLightBackground,
+      ...style,
+    }}
+  >
+    {children}
+  </Link>
+);
 
-export const Heading1 = styled.Text`
-  ${cssFontSansBold}
-  ${cssFontSizeHeading1}
-  ${cssLineHeightHeading}
-  ${cssMarginMajorHeading}
-`;
+export const Heading1 = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansBold,
+      ...cssFontSizeHeading1,
+      ...cssLineHeightHeading,
+      ...cssMarginMajorHeading,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const Heading2 = styled.Text`
-  ${cssFontSansBold}
-  ${cssFontSizeHeading2}
-  ${cssLineHeightHeading}
-  ${cssMarginMajorHeading}
-`;
+export const Heading2 = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansBold,
+      ...cssFontSizeHeading2,
+      ...cssLineHeightHeading,
+      ...cssMarginMajorHeading,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const Heading3 = styled.Text`
-  ${cssFontSansRegular}
-  ${cssFontSizeHeading3}
-  ${cssLineHeightHeading}
-  ${cssMarginMinorHeading}
-`;
+export const Heading3 = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssFontSizeHeading3,
+      ...cssLineHeightHeading,
+      ...cssMarginMinorHeading,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const Heading4 = styled.Text`
-  ${cssFontSansRegular}
-  ${cssFontSizeHeading4}
-  ${cssLineHeightHeading}
-  ${cssMarginMinorHeading}
-`;
+export const Heading4 = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssFontSizeHeading4,
+      ...cssLineHeightHeading,
+      ...cssMarginMinorHeading,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const Heading4Link = styled.Link`
-  ${cssFontSansRegular}
-  ${cssFontSizeHeading4}
-  ${cssLineHeightHeading}
-  ${cssMarginMinorHeading}
-  ${cssColorLinkOnLightBackground}
-  text-decoration: none;
-  text-decoration-color: white;
-`;
+export const Heading4Link = ({ children, style, ...props }) => (
+  <Link
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssFontSizeHeading4,
+      ...cssLineHeightHeading,
+      ...cssMarginMinorHeading,
+      ...cssColorLinkOnLightBackground,
+      textDecoration: 'none',
+      textDecorationColor: 'white',
+      ...style,
+    }}
+  >
+    {children}
+  </Link>
+);
 
-export const Heading5 = styled.Text`
-  ${cssFontSansRegular}
-  ${cssFontSizeHeading5}
-  ${cssLineHeightHeading}
-  ${cssMarginMinorHeading}
-`;
+export const Heading5 = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssFontSizeHeading5,
+      ...cssLineHeightHeading,
+      ...cssMarginMinorHeading,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const Heading6 = styled.Text`
-  ${cssFontSansRegular}
-  ${cssFontSizeHeading6}
-  ${cssLineHeightHeading}
-  ${cssMarginMinorHeading}
-  text-transform: uppercase;
-`;
+export const Heading6 = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssFontSizeHeading6,
+      ...cssLineHeightHeading,
+      ...cssMarginMinorHeading,
+      textTransform: 'uppercase',
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const BookLink = styled.Link`
-  ${cssFontSizeBodyText}
-  ${cssColorLinkOnLightBackground}
-  line-height: 1.5;
-  ${cssMarginBodyText}
-  text-decoration: none;
-  text-decoration-color: white;
-`;
+const ListContainer = ({ children, style, ...props }) => (
+  <View
+    {...props}
+    style={{
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    }}
+  >
+    {children}
+  </View>
+);
 
-const ListContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  ${cssMarginBodyText}
-`;
+const StyledListCounter = ({ children, style, ...props }) => (
+  <View
+    {...props}
+    style={{
+      alignSelf: 'flex-start',
+      width: '6%',
+      ...style,
+    }}
+  >
+    {children}
+  </View>
+);
 
-const StyledListCounter = styled.View`
-  align-self: flex-start;
-  width: 6%;
-`;
+const ListCounterText = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssBodyTextStyles,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-const ListCounterText = styled.Text`
-  ${cssFontSansRegular}
-  ${cssBodyTextStyles}
-`;
-
-export const PaddedImage = styled(Image)`
-  object-fit: contain;
-  padding: 5pt;
-`;
+export const PaddedImage = ({ children, style, ...props }) => (
+  <Image
+    {...props}
+    style={{
+      objectFit: 'contain',
+      padding: '5pt',
+      ...style,
+    }}
+  >
+    {children}
+  </Image>
+);
 
 const ListCounter = ({ children, ...props }) => (
   <StyledListCounter {...props}>
@@ -247,13 +327,29 @@ const ListCounter = ({ children, ...props }) => (
   </StyledListCounter>
 );
 
-const StyledListItem = styled.View`
-  width: 93%;
-`;
+const StyledListItem = ({ children, style, ...props }) => (
+  <View
+    {...props}
+    style={{
+      width: '93%',
+      ...style,
+    }}
+  >
+    {children}
+  </View>
+);
 
-const ListItemText = styled.Text`
-  ${cssFontSansRegular}
-`;
+const ListItemText = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
 const ListItem = ({ children, ...props }) => (
   <StyledListItem {...props}>
@@ -284,42 +380,45 @@ export const DefinitionTerm = ({ children, ...props }) => (
   <ListCounter {...props}>{children}</ListCounter>
 );
 
-export const Superscript = styled.Text`
-  ${cssFontSizeSuperSubscript}
-  top: 0;
-`;
-
-export const Subscript = styled.Text`
-  ${cssFontSizeSuperSubscript}
-  bottom: -2;
-`;
-
-const BlueBox = styled.View``;
-const NavigateButton = styled.View`
-  background-color: #007398;
-  height: 24pt;
-  width: 24pt;
-`;
-export const NavigateRight = () => (
-  <NavigateButton>
-    <BlueBox>&gt;</BlueBox>
-  </NavigateButton>
+export const Superscript = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSizeSuperSubscript,
+      top: '0',
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
 );
-export const NavigateRightButton = ({ children }) => (
-  <FlexContainer>
-    <NavigateRight />
-    <View>{children}</View>
-  </FlexContainer>
+
+export const Subscript = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSizeSuperSubscript,
+      bottom: '-2',
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
 );
-NavigateRightButton.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 const FullWidthView = FlexContainer;
 
-export const Table = styled.View`
-  margin: 12pt 0;
-`;
+export const Table = ({ children, style, ...props }) => (
+  <View
+    {...props}
+    style={{
+      margin: '12pt 0',
+      ...style,
+    }}
+  >
+    {children}
+  </View>
+);
 
 export const TableHeader = View;
 
@@ -346,15 +445,31 @@ TableRow.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export const TableData = styled.Text`
-  ${cssFontSansRegular}
-  ${cssFontSizeTableText}
-  ${cssColorTextOnLightBackground}
-`;
+export const TableData = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansRegular,
+      ...cssFontSizeTableText,
+      ...cssColorTextOnLightBackground,
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);
 
-export const TableHeading = styled.Text`
-  ${cssFontSansBold}
-  ${cssFontSizeTableText}
-  ${cssColorTextOnLightBackground}
-  width: 100%;
-`;
+export const TableHeading = ({ children, style, ...props }) => (
+  <Text
+    {...props}
+    style={{
+      ...cssFontSansBold,
+      ...cssFontSizeTableText,
+      ...cssColorTextOnLightBackground,
+      width: '100%',
+      ...style,
+    }}
+  >
+    {children}
+  </Text>
+);

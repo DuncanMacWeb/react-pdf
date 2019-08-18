@@ -142,10 +142,7 @@ const domNodeToReactComponentTree = ({ node, ...options } = {}) => {
     ...(nodeComputedStyle.length
       ? {
           style: REACT_PDF_CSS_PROPERTIES.reduce((computedStyles, propName) => {
-            if (
-              nodeComputedStyle[propName] &&
-              nodeComputedStyle[propName] !== ''
-            ) {
+            if (nodeComputedStyle[propName]) {
               computedStyles[propName] = nodeComputedStyle[propName];
             }
             return computedStyles;
