@@ -58,16 +58,16 @@ export const cssBannerTitleText = {
   lineHeight: '1.5',
 };
 
-const directionToFlexDirection = ({ direction = 'row' }) => direction; // eslint-disable-line no-shadow
+const directionToFlexDirection = (direction = 'row') => direction; // eslint-disable-line no-shadow
 // eslint-disable-next-line
-const alignToFlexAlignment = ({ align = 'flex-start' }) =>
+const alignToFlexAlignment = (align = 'flex-start') =>
   align === 'right' || align === 'bottom'
     ? 'flex-end'
     : align === 'left' || align === 'top'
     ? 'flex-start'
     : align;
 // eslint-disable-next-line
-const justifyToFlexAlignment = ({ justify = 'flex-start' }) =>
+const justifyToFlexAlignment = (justify = 'flex-start') =>
   justify === 'right' || justify === 'bottom'
     ? 'flex-end'
     : justify === 'left' || justify === 'top'

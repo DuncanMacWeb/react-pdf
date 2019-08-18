@@ -1,4 +1,5 @@
 /** @jsx react.createElement */
+import { Text } from '../../node';
 
 const REACT_PDF_CSS_PROPERTIES = [
   // Flexbox
@@ -43,7 +44,7 @@ const REACT_PDF_CSS_PROPERTIES = [
   // Text
 
   'fontSize',
-  'fontFamily',
+  // 'fontFamily', (to avoid "Font family not registered" error)
   'fontStyle',
   'fontWeight',
   'letterSpacing',
@@ -127,8 +128,8 @@ const domNodeToReactComponentTree = ({ node, ...options } = {}) => {
 
   const nodeComputedStyle =
     node instanceof win.Element ? win.getComputedStyle(node) : {};
-  const Node = node.nodeName.toLowerCase();
-  if (blacklist.includes(Node)) {
+  const Node = 'nodeName' in node ? node.nodeName.toLowerCase() : node;
+  if ([...blacklist, undefined].includes(Node)) {
     return null;
   }
   const attrs = {
@@ -152,16 +153,22 @@ const domNodeToReactComponentTree = ({ node, ...options } = {}) => {
   };
   const children = Array.from(node.childNodes || []).reduce(
     (nodes, childNode) => {
-      if (!childNode) {
+      if (
+        !childNode ||
+        childNode instanceof win.CDATASection ||
+        childNode instanceof win.Comment
+      ) {
         return nodes;
       }
       if (childNode instanceof win.Text) {
         return [
           ...nodes,
-          (childNode.innerText || childNode.textContent || '').replace(
-            /[\s\n]+/gu,
-            ' ',
-          ),
+          <Text>
+            {(childNode.innerText || childNode.textContent || '').replace(
+              /[\s\n]{2,}/gu,
+              ' ',
+            )}
+          </Text>,
         ];
       }
       return [
@@ -171,8 +178,6 @@ const domNodeToReactComponentTree = ({ node, ...options } = {}) => {
     },
     [],
   );
-
-  console.log(Node, { attrs, children });
 
   return <Node {...attrs}>{children}</Node>;
 };

@@ -1,27 +1,32 @@
 import React from 'react';
 import jsdom, { JSDOM } from 'jsdom';
-import { renderToFile, Document, Page } from '../../node';
+import { renderToFile, Document, Page, Font } from '../../node';
 import domNodeToReactComponentTree from './domNodeToComponentTree';
-import createPdfElement from './createPdfElement';
+import createPdfElement, { Noop } from './createPdfElement';
 
 const HREF =
   '../topic-page/static/protocols-plus/neuroscience_sanger-sequencing.html';
 
+Font.register('../topic-page/static/fonts/NexusSansWebPro-Regular.woff', {
+  family: 'sans-serif',
+});
+Font.register('../topic-page/static/fonts/NexusSansWebPro-Regular.woff', {
+  family: undefined,
+  fontWeight: '400',
+});
+
 const HtmlPdfWraper = ({ node, global }) => {
-  console.log(node.outerHTML);
-  const PdfDomTree = domNodeToReactComponentTree({
+  const children = domNodeToReactComponentTree({
     node,
     global,
     React: {
       createElement: createPdfElement,
     },
-    blacklist: ['script', 'svg'],
+    blacklist: ['script', 'svg', 'style', Noop],
   });
   return (
     <Document>
-      <Page wrap>
-        <PdfDomTree />
-      </Page>
+      <Page wrap>{children}</Page>
     </Document>
   );
 };
