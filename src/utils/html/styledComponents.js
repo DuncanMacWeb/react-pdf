@@ -10,34 +10,34 @@ export const cssColorLinkOnLightBackground = { color: '#0c7dbb' };
 export const cssColorTextOnLightBackground = { color: '#2e2e2e' };
 
 export const cssFontSansRegular = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
 };
 export const cssFontSansBold = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
   fontWeight: 'bold',
 };
 export const cssFontSansItalic = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
   fontStyle: 'italic',
 };
 export const cssFontSansBoldItalic = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
   fontWeight: 'bold',
   fontStyle: 'italic',
 };
 export const cssFontSerifRegular = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
 };
 export const cssFontSerifBold = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
   fontWeight: 'bold',
 };
 export const cssFontSerifItalic = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
   fontStyle: 'italic',
 };
 export const cssFontSerifBoldItalic = {
-  fontFamily: 'sans-serif',
+  // fontFamily: 'sans-serif',
   fontWeight: 'bold',
   fontStyle: 'italic',
 };
