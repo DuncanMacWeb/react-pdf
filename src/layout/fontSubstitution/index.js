@@ -1,4 +1,4 @@
-import { pathOr, last } from 'ramda';
+import { pathOr, last, flatten } from 'ramda';
 
 import Font from '../../font';
 import StandardFont from './standardFont';
@@ -20,17 +20,16 @@ const getFallbackFont = () => {
 };
 
 const toFontNameStack = (...fontFamilyObjects) =>
-  fontFamilyObjects
-    .map(fontFamilies =>
+  flatten(
+    fontFamilyObjects.map(fontFamilies =>
       typeof fontFamilies === 'string'
         ? fontFamilies.split(',').map(f => f.trim())
         : Array.from(fontFamilies || []),
-    )
-    .flat()
-    .reduce(
-      (fonts, font) => (fonts.includes(font) ? fonts : [...fonts, font]),
-      [],
-    );
+    ),
+  ).reduce(
+    (fonts, font) => (fonts.includes(font) ? fonts : [...fonts, font]),
+    [],
+  );
 
 const getFontStack = ({ font, fontFamily, fontStyle, fontWeight }) =>
   toFontNameStack(font, fontFamily).map(fontFamilyName => {
