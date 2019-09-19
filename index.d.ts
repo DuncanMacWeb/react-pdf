@@ -47,7 +47,7 @@ declare module '@react-pdf/renderer' {
       // Text?:never,
 
       fontSize?: number | string,
-      fontFamily?: string | array,
+      fontFamily?: string | string[],
       fontStyle?: string | 'normal',
       fontWeight?: number | 'thin' | 'hairline' | 'ultralight' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'demibold' | 'bold' | 'ultrabold' | 'extrabold' | 'heavy' | 'black',
       letterSpacing?: number | string,
@@ -356,7 +356,7 @@ declare module '@react-pdf/renderer' {
 
     interface FontSource {
       src: string;
-      fontFamily: string | array;
+      fontFamily: string | string[];
       fontStyle: FontStyle;
       fontWeight: number;
       data: any;
