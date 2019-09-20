@@ -43,25 +43,22 @@ const getFontStack = ({ font, fontFamily, fontStyle, fontWeight }) =>
 
     if (fontCache[name]) return fontCache[name];
 
-    try {
-      fontCache[name] = Font.getFont({
-        fontFamily: fontFamilyName,
-        fontWeight,
-        fontStyle,
-      });
-    } catch {}
+    fontCache[name] = Font.getFont({
+      fontFamily: fontFamilyName,
+      fontWeight,
+      fontStyle,
+    });
 
-    try {
-      if (!fontCache[name] || !fontCache[name].data) {
-        fontCache[name] = new StandardFont(fontFamilyName);
-      }
-    } catch {}
+    if (!fontCache[name] || !fontCache[name].data) {
+      fontCache[name] = new StandardFont(fontFamilyName);
+    }
 
-    return font;
+    return fontCache[name];
   });
 
 const pickFontFromFontStack = (codePoint, fontStack) => {
-  for (const font of [...fontStack, getFallbackFont()]) {
+  const fontStackWithFallbackFont = [...fontStack, getFallbackFont()];
+  for (const font of fontStackWithFallbackFont) {
     if (
       !IGNORED_CODE_POINTS.includes(codePoint) &&
       font &&
@@ -81,10 +78,7 @@ const fontSubstitution = () => ({ string, runs }) => {
 
   const res = [];
 
-  console.log('fontSubstitution called with', { string, runs });
-
   for (const run of runs) {
-    console.log(run);
     const fontSize = getFontSize(run);
     const fontStack = getFontStack(run.attributes);
 
@@ -98,7 +92,7 @@ const fontSubstitution = () => ({ string, runs }) => {
       const font = pickFontFromFontStack(codePoint, fontStack);
 
       // If the default font does not have a glyph and the fallback font does, we use it
-      if (font !== lastFont) {
+      if (font && font !== lastFont) {
         if (lastFont) {
           res.push({
             start: lastIndex,

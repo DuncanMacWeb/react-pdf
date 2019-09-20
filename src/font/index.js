@@ -38,26 +38,30 @@ const getRegisteredFonts = () => fonts;
 
 const getRegisteredFontFamilies = () => Object.keys(fonts);
 
+const extractFontFamiliesFromDescriptor = ({ fontFamily }) =>
+  typeof fontFamily === 'string'
+    ? fontFamily.split(',').map(family => family.trim())
+    : [...(fontFamily || [])];
+
 const getFont = descriptor => {
-  const { fontFamily } = descriptor;
-  const isStandard = standardFonts.includes(fontFamily);
+  const fontFamilies = extractFontFamiliesFromDescriptor(descriptor);
+  for (let len = fontFamilies.length, i = 0; i < len; i++) {
+    const fontFamily = fontFamilies[i];
+    const isStandard = standardFonts.includes(fontFamily);
 
-  if (isStandard) return null;
+    if (isStandard) return null;
 
-  if (!fonts[fontFamily]) {
-    throw new Error(
-      `Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`,
-    );
+    if (fonts[fontFamily]) {
+      return fonts[fontFamily].resolve(descriptor);
+    }
   }
-
-  return fonts[fontFamily].resolve(descriptor);
+  throw new Error(
+    `Font family or families not registered: ${fontFamilies}. Please register it by calling Font.register() method.`,
+  );
 };
 
 const load = function({ fontFamily, ...descriptor }, doc, text = '') {
-  const fontFamilies =
-    typeof fontFamily === 'string'
-      ? fontFamily.split(',').map(family => family.trim())
-      : [...(fontFamily || [])];
+  const fontFamilies = extractFontFamiliesFromDescriptor({ fontFamily });
   const promises = [];
 
   let remainingChars = [...text];
@@ -72,7 +76,7 @@ const load = function({ fontFamily, ...descriptor }, doc, text = '') {
     remainingChars = remainingChars.filter(ch => !matches.includes(ch));
 
     // We cache the font to avoid fetching it many times
-    if (matches.length) {
+    if (matches && matches.length) {
       if (!font.data && !font.loading) {
         promises.push(font.load());
       }

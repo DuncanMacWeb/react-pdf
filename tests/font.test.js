@@ -110,7 +110,7 @@ describe('Font', () => {
     const descriptor = { fontFamily: 'Oswald' };
 
     Font.register({ family: 'Oswald', src: oswaldUrl });
-    await Font.load(descriptor, dummyRoot.instance);
+    await Font.load(descriptor, dummyRoot.instance, 'text');
 
     const font = Font.getFont(descriptor);
 
@@ -124,7 +124,7 @@ describe('Font', () => {
     const descriptor = { fontFamily: 'Oswald' };
 
     Font.register({ family: 'Oswald', src: oswaldUrl });
-    await Font.load(descriptor, dummyRoot.instance);
+    await Font.load(descriptor, dummyRoot.instance, 'text');
 
     expect(fetch.mock.calls[0][1].method).toBe('GET');
   });
@@ -135,7 +135,7 @@ describe('Font', () => {
     const descriptor = { fontFamily: 'Oswald' };
 
     Font.register({ family: 'Oswald', src: oswaldUrl, method: 'POST' });
-    await Font.load(descriptor, dummyRoot.instance);
+    await Font.load(descriptor, dummyRoot.instance, 'text');
 
     expect(fetch.mock.calls[0][1].method).toBe('POST');
   });
@@ -147,7 +147,7 @@ describe('Font', () => {
     const headers = { Authorization: 'Bearer qwerty' };
 
     Font.register({ family: 'Oswald', src: oswaldUrl, headers });
-    await Font.load(descriptor, dummyRoot.instance);
+    await Font.load(descriptor, dummyRoot.instance, 'text');
 
     expect(fetch.mock.calls[0][1].headers).toBe(headers);
   });
@@ -159,7 +159,7 @@ describe('Font', () => {
     const body = 'qwerty';
 
     Font.register({ family: 'Oswald', src: oswaldUrl, body });
-    await Font.load(descriptor, dummyRoot.instance);
+    await Font.load(descriptor, dummyRoot.instance, 'text');
 
     expect(fetch.mock.calls[0][1].body).toBe(body);
   });
@@ -169,7 +169,7 @@ describe('Font', () => {
 
     const descriptor = { fontFamily: 'Roboto' };
 
-    await Font.load(descriptor, dummyRoot.instance);
+    await Font.load(descriptor, dummyRoot.instance, 'text');
 
     const font = Font.getFont(descriptor);
 
@@ -190,8 +190,8 @@ describe('Font', () => {
     Font.register({ family: 'Oswald', src: oswaldUrl });
 
     const fontResolvers = Promise.all([
-      Font.load(descriptor, dummyRoot.instance),
-      Font.load(descriptor, dummyRoot.instance),
+      Font.load(descriptor, dummyRoot.instance, 'text'),
+      Font.load(descriptor, dummyRoot.instance, 'text'),
     ]);
 
     await fontResolvers;
@@ -218,7 +218,7 @@ describe('Font', () => {
 
     const descriptor = { fontFamily: 'Roboto', fontStyle: 'italic' };
 
-    await Font.load(descriptor, dummyRoot.instance);
+    await Font.load(descriptor, dummyRoot.instance, 'text');
 
     const font = Font.getFont(descriptor);
 
@@ -393,7 +393,7 @@ describe('Font', () => {
       Font.register({ family: 'Roboto', src: '/roboto.ttf' });
 
       expect(
-        Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance),
+        Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance, 'text'),
       ).rejects.toThrow('no such file or directory');
     });
   });
