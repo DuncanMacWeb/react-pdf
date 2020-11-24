@@ -2,7 +2,9 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+function _interopDefault(ex) {
+  return ex && typeof ex === 'object' && 'default' in ex ? ex['default'] : ex;
+}
 
 var fs = _interopDefault(require('fs'));
 var BlobStream = _interopDefault(require('blob-stream'));
@@ -11,10 +13,10 @@ var PDFDocument = require('@react-pdf/pdfkit');
 var PDFDocument__default = _interopDefault(PDFDocument);
 var react = require('react');
 var Yoga = _interopDefault(require('yoga-layout-prebuilt'));
-var pick = _interopDefault(require('lodash.pick'));
-var merge = _interopDefault(require('lodash.merge'));
-var toPairsIn = _interopDefault(require('lodash.topairsin'));
-var isFunction = _interopDefault(require('lodash.isfunction'));
+var pick = _interopDefault(require('lodash/pick'));
+var merge = _interopDefault(require('lodash/merge'));
+var toPairsIn = _interopDefault(require('lodash/topairsin'));
+var isFunction = _interopDefault(require('lodash/isfunction'));
 var matchMedia = _interopDefault(require('media-engine'));
 var createPDFRenderer = _interopDefault(require('@textkit/pdf-renderer'));
 var isUrl = _interopDefault(require('is-url'));
@@ -22,14 +24,18 @@ var fontkit = _interopDefault(require('@react-pdf/fontkit'));
 var fetch = _interopDefault(require('cross-fetch'));
 var textkitCore = require('@react-pdf/textkit-core');
 var scriptItemizer = _interopDefault(require('@react-pdf/script-itemizer'));
-var justificationEngine = _interopDefault(require('@textkit/justification-engine'));
-var textDecorationEngine = _interopDefault(require('@textkit/text-decoration-engine'));
+var justificationEngine = _interopDefault(
+  require('@textkit/justification-engine'),
+);
+var textDecorationEngine = _interopDefault(
+  require('@textkit/text-decoration-engine'),
+);
 var emojiRegex = _interopDefault(require('emoji-regex'));
 var url = _interopDefault(require('url'));
 var path = _interopDefault(require('path'));
-var jpegasus = _interopDefault(require('jpegasus'));
-var toBufferCb = _interopDefault(require('blob-to-buffer'));
-var toArrayBuffer = _interopDefault(require('to-arraybuffer'));
+require('jpegasus');
+require('blob-to-buffer');
+require('to-arraybuffer');
 var PNG = _interopDefault(require('@react-pdf/png-js'));
 var wrapPages = _interopDefault(require('page-wrapping'));
 
@@ -58,12 +64,11 @@ class Root {
 
   async render() {
     this.instance = new PDFDocument__default({
-      autoFirstPage: false
+      autoFirstPage: false,
     });
     await this.document.render();
     this.isDirty = false;
   }
-
 }
 
 const upperFirst = value => value.charAt(0).toUpperCase() + value.slice(1);
@@ -80,7 +85,7 @@ const matchPercent = value => {
       value,
       percent,
       absValue: Math.abs(value),
-      absPercent: Math.abs(percent)
+      absPercent: Math.abs(percent),
     };
   }
 
@@ -187,15 +192,18 @@ class Node {
 
   getAbsoluteLayout() {
     const parent = this.parent;
-    const parentLayout = parent && parent.getAbsoluteLayout ? parent.getAbsoluteLayout() : {
-      left: 0,
-      top: 0
-    };
+    const parentLayout =
+      parent && parent.getAbsoluteLayout
+        ? parent.getAbsoluteLayout()
+        : {
+            left: 0,
+            top: 0,
+          };
     return {
       left: this.left + parentLayout.left,
       top: this.top + parentLayout.top,
       height: this.height,
-      width: this.width
+      width: this.width,
     };
   }
 
@@ -219,7 +227,9 @@ class Node {
   onAppendDynamically() {}
 
   get position() {
-    return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE ? 'absolute' : 'relative';
+    return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE
+      ? 'absolute'
+      : 'relative';
   }
 
   get top() {
@@ -315,7 +325,7 @@ class Node {
       top: this.paddingTop,
       right: this.paddingRight,
       bottom: this.paddingBottom,
-      left: this.paddingLeft
+      left: this.paddingLeft,
     };
   }
 
@@ -324,12 +334,16 @@ class Node {
       top: this.marginTop,
       right: this.marginRight,
       bottom: this.marginBottom,
-      left: this.marginLeft
+      left: this.marginLeft,
     };
   }
 
   set position(value) {
-    this.layout.setPositionType(value === 'absolute' ? Yoga.POSITION_TYPE_ABSOLUTE : Yoga.POSITION_TYPE_RELATIVE);
+    this.layout.setPositionType(
+      value === 'absolute'
+        ? Yoga.POSITION_TYPE_ABSOLUTE
+        : Yoga.POSITION_TYPE_RELATIVE,
+    );
   }
 
   set top(value) {
@@ -433,11 +447,11 @@ class Node {
   set borderLeftWidth(value) {
     this.setBorder(Yoga.EDGE_LEFT, value);
   }
-
 }
 
 const yogaValue = (prop, value) => {
-  const isAlignType = prop => prop === 'alignItems' || prop === 'alignContent' || prop === 'alignSelf';
+  const isAlignType = prop =>
+    prop === 'alignItems' || prop === 'alignContent' || prop === 'alignSelf';
 
   switch (value) {
     case 'auto':
@@ -542,12 +556,12 @@ const parseValue = value => {
   if (match) {
     return {
       value: parseFloat(match[1], 10),
-      unit: match[2] || 'pt'
+      unit: match[2] || 'pt',
     };
   } else {
     return {
       value,
-      unit: undefined
+      unit: undefined,
     };
   }
 };
@@ -576,10 +590,11 @@ const parseScalar = value => {
   return result;
 };
 
-const isBorderStyle = (key, value) => key.match(/^border/) && typeof value === 'string';
+const isBorderStyle = (key, value) =>
+  key.match(/^border/) && typeof value === 'string';
 
-const matchBorderShorthand = value => value.match(/(\d+(px|in|mm|cm|pt)?)\s(\S+)\s(\S+)/); // Transforms shorthand border values
-
+const matchBorderShorthand = value =>
+  value.match(/(\d+(px|in|mm|cm|pt)?)\s(\S+)\s(\S+)/); // Transforms shorthand border values
 
 const processBorders = (key, value) => {
   const match = matchBorderShorthand(value);
@@ -599,10 +614,10 @@ const processBorders = (key, value) => {
   return value;
 };
 
-const isBoxModelStyle = (key, value) => key.match(/^(margin)|(padding)/) && typeof value === 'string';
+const isBoxModelStyle = (key, value) =>
+  key.match(/^(margin)|(padding)/) && typeof value === 'string';
 
 const matchBoxModel = value => value.match(/\d+(px|in|mm|cm|pt|%)?/g); // Transforms shorthand margin and padding values
-
 
 const processBoxModel = (key, value) => {
   const match = matchBoxModel(value);
@@ -639,7 +654,7 @@ const FONT_WEIGHTS = {
   ultrabold: 800,
   extrabold: 800,
   heavy: 900,
-  black: 900
+  black: 900,
 };
 const isFontWeightStyle = key => key.match(/^fontWeight/);
 const processFontWeight = value => {
@@ -648,10 +663,10 @@ const processFontWeight = value => {
   return FONT_WEIGHTS[value.toLowerCase()];
 };
 
-const isObjectPositionStyle = (key, value) => key.match(/^objectPosition/) && typeof value === 'string';
+const isObjectPositionStyle = (key, value) =>
+  key.match(/^objectPosition/) && typeof value === 'string';
 
 const matchObjectPosition = value => value.match(/\d+(px|in|mm|cm|pt|%)?/g); // Transforms shorthand objectPosition values
-
 
 const processObjectPosition = (key, value) => {
   const match = matchObjectPosition(value);
@@ -669,9 +684,11 @@ const processObjectPosition = (key, value) => {
   return value;
 };
 
-const isTransformOriginStyle = (key, value) => key.match(/^transformOrigin/) && typeof value === 'string';
+const isTransformOriginStyle = (key, value) =>
+  key.match(/^transformOrigin/) && typeof value === 'string';
 
-const matchTransformOrigin = value => value.match(/(-?\d+(px|in|mm|cm|pt|%)?)|top|right|bottom|left|center/g);
+const matchTransformOrigin = value =>
+  value.match(/(-?\d+(px|in|mm|cm|pt|%)?)|top|right|bottom|left|center/g);
 
 const transformOffsetKeywords = value => {
   switch (value) {
@@ -690,7 +707,6 @@ const transformOffsetKeywords = value => {
       return value;
   }
 }; // Transforms shorthand transformOrigin values
-
 
 const processTransformOrigin = (key, value) => {
   const match = matchTransformOrigin(value);
@@ -718,29 +734,29 @@ const styleShorthands = {
     marginTop: true,
     marginRight: true,
     marginBottom: true,
-    marginLeft: true
+    marginLeft: true,
   },
   marginHorizontal: {
     marginLeft: true,
-    marginRight: true
+    marginRight: true,
   },
   marginVertical: {
     marginTop: true,
-    marginBottom: true
+    marginBottom: true,
   },
   padding: {
     paddingTop: true,
     paddingRight: true,
     paddingBottom: true,
-    paddingLeft: true
+    paddingLeft: true,
   },
   paddingHorizontal: {
     paddingLeft: true,
-    paddingRight: true
+    paddingRight: true,
   },
   paddingVertical: {
     paddingTop: true,
-    paddingBottom: true
+    paddingBottom: true,
   },
   border: {
     borderTopColor: true,
@@ -754,60 +770,60 @@ const styleShorthands = {
     borderBottomWidth: true,
     borderLeftColor: true,
     borderLeftStyle: true,
-    borderLeftWidth: true
+    borderLeftWidth: true,
   },
   borderTop: {
     borderTopColor: true,
     borderTopStyle: true,
-    borderTopWidth: true
+    borderTopWidth: true,
   },
   borderRight: {
     borderRightColor: true,
     borderRightStyle: true,
-    borderRightWidth: true
+    borderRightWidth: true,
   },
   borderBottom: {
     borderBottomColor: true,
     borderBottomStyle: true,
-    borderBottomWidth: true
+    borderBottomWidth: true,
   },
   borderLeft: {
     borderLeftColor: true,
     borderLeftStyle: true,
-    borderLeftWidth: true
+    borderLeftWidth: true,
   },
   borderColor: {
     borderTopColor: true,
     borderRightColor: true,
     borderBottomColor: true,
-    borderLeftColor: true
+    borderLeftColor: true,
   },
   borderRadius: {
     borderTopLeftRadius: true,
     borderTopRightRadius: true,
     borderBottomRightRadius: true,
-    borderBottomLeftRadius: true
+    borderBottomLeftRadius: true,
   },
   borderStyle: {
     borderTopStyle: true,
     borderRightStyle: true,
     borderBottomStyle: true,
-    borderLeftStyle: true
+    borderLeftStyle: true,
   },
   borderWidth: {
     borderTopWidth: true,
     borderRightWidth: true,
     borderBottomWidth: true,
-    borderLeftWidth: true
+    borderLeftWidth: true,
   },
   objectPosition: {
     objectPositionX: true,
-    objectPositionY: true
+    objectPositionY: true,
   },
   transformOrigin: {
     transformOriginX: true,
-    transformOriginY: true
-  }
+    transformOriginY: true,
+  },
 }; // Expand the shorthand properties to isolate every declaration from the others.
 
 const expandStyles = style => {
@@ -895,7 +911,7 @@ const transformStyles = style => {
       resolved = processObjectPosition(key, value);
     } else if (isTransformOriginStyle(key, value)) {
       resolved = processTransformOrigin(key, value);
-    } else if (isFontWeightStyle(key, value)) {
+    } else if (isFontWeightStyle(key)) {
       resolved = processFontWeight(value);
     } else {
       resolved = value;
@@ -932,16 +948,18 @@ const flatten = input => {
 const resolveMediaQueries = (input, container) => {
   const result = Object.keys(input).reduce((acc, key) => {
     if (/@media/.test(key)) {
-      return { ...acc,
-        ...matchMedia({
-          [key]: input[key]
-        }, container)
+      return {
+        ...acc,
+        ...matchMedia(
+          {
+            [key]: input[key],
+          },
+          container,
+        ),
       };
     }
 
-    return { ...acc,
-      [key]: input[key]
-    };
+    return { ...acc, [key]: input[key] };
   }, {});
   return result;
 };
@@ -959,14 +977,14 @@ const absoluteFillObject = {
   top: 0,
   left: 0,
   bottom: 0,
-  right: 0
+  right: 0,
 };
 var StyleSheet = {
   hairlineWidth: 1,
   create,
   resolve,
   flatten,
-  absoluteFillObject
+  absoluteFillObject,
 };
 
 const Debug = {
@@ -986,44 +1004,110 @@ const Debug = {
   debugOrigin() {
     if (this.style.transform) {
       const origin = this.origin;
-      this.root.instance.circle(origin[0], origin[1], 3).fill('red').circle(origin[0], origin[1], 5).stroke('red');
+      this.root.instance
+        .circle(origin[0], origin[1], 3)
+        .fill('red')
+        .circle(origin[0], origin[1], 5)
+        .stroke('red');
     }
   },
 
   debugText(layout, margin) {
     const roundedWidth = Math.round(this.width + margin.left + margin.right);
     const roundedHeight = Math.round(this.height + margin.top + margin.bottom);
-    this.root.instance.fontSize(4).opacity(1).fillColor('black').text(`${roundedWidth} x ${roundedHeight}`, layout.left - margin.left, Math.max(layout.top - margin.top - 4, 1));
+    this.root.instance
+      .fontSize(4)
+      .opacity(1)
+      .fillColor('black')
+      .text(
+        `${roundedWidth} x ${roundedHeight}`,
+        layout.left - margin.left,
+        Math.max(layout.top - margin.top - 4, 1),
+      );
   },
 
   debugContent(layout, margin, padding) {
-    this.root.instance.fillColor('#a1c6e7').opacity(0.5).rect(layout.left + padding.left, layout.top + padding.top, layout.width - padding.left - padding.right, layout.height - padding.top - padding.bottom).fill();
+    this.root.instance
+      .fillColor('#a1c6e7')
+      .opacity(0.5)
+      .rect(
+        layout.left + padding.left,
+        layout.top + padding.top,
+        layout.width - padding.left - padding.right,
+        layout.height - padding.top - padding.bottom,
+      )
+      .fill();
   },
 
   debugPadding(layout, margin, padding) {
     this.root.instance.fillColor('#c4deb9').opacity(0.5); // Padding top
 
-    this.root.instance.rect(layout.left + padding.left, layout.top, layout.width - padding.right - padding.left, padding.top).fill(); // Padding left
+    this.root.instance
+      .rect(
+        layout.left + padding.left,
+        layout.top,
+        layout.width - padding.right - padding.left,
+        padding.top,
+      )
+      .fill(); // Padding left
 
-    this.root.instance.rect(layout.left, layout.top, padding.left, layout.height).fill(); // Padding right
+    this.root.instance
+      .rect(layout.left, layout.top, padding.left, layout.height)
+      .fill(); // Padding right
 
-    this.root.instance.rect(layout.left + layout.width - padding.right, layout.top, padding.right, layout.height).fill(); // Padding bottom
+    this.root.instance
+      .rect(
+        layout.left + layout.width - padding.right,
+        layout.top,
+        padding.right,
+        layout.height,
+      )
+      .fill(); // Padding bottom
 
-    this.root.instance.rect(layout.left + padding.left, layout.top + layout.height - padding.bottom, layout.width - padding.right - padding.left, padding.bottom).fill();
+    this.root.instance
+      .rect(
+        layout.left + padding.left,
+        layout.top + layout.height - padding.bottom,
+        layout.width - padding.right - padding.left,
+        padding.bottom,
+      )
+      .fill();
   },
 
   debugMargin(layout, margin) {
     this.root.instance.fillColor('#f8cca1').opacity(0.5); // Margin top
 
-    this.root.instance.rect(layout.left, layout.top - margin.top, layout.width, margin.top).fill(); // Margin left
+    this.root.instance
+      .rect(layout.left, layout.top - margin.top, layout.width, margin.top)
+      .fill(); // Margin left
 
-    this.root.instance.rect(layout.left - margin.left, layout.top - margin.top, margin.left, layout.height + margin.top + margin.bottom).fill(); // Margin right
+    this.root.instance
+      .rect(
+        layout.left - margin.left,
+        layout.top - margin.top,
+        margin.left,
+        layout.height + margin.top + margin.bottom,
+      )
+      .fill(); // Margin right
 
-    this.root.instance.rect(layout.left + layout.width, layout.top - margin.top, margin.right, layout.height + margin.top + margin.bottom).fill(); // Margin bottom
+    this.root.instance
+      .rect(
+        layout.left + layout.width,
+        layout.top - margin.top,
+        margin.right,
+        layout.height + margin.top + margin.bottom,
+      )
+      .fill(); // Margin bottom
 
-    this.root.instance.rect(layout.left, layout.top + layout.height, layout.width, margin.bottom).fill();
-  }
-
+    this.root.instance
+      .rect(
+        layout.left,
+        layout.top + layout.height,
+        layout.width,
+        margin.bottom,
+      )
+      .fill();
+  },
 };
 
 // Ref: https://www.w3.org/TR/css-backgrounds-3/#borders
@@ -1031,15 +1115,13 @@ const Debug = {
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 
 function drawBorders() {
-  const {
-    instance
-  } = this.root;
+  const { instance } = this.root;
   const layout = this.getAbsoluteLayout();
   const {
     borderTopWidth,
     borderLeftWidth,
     borderRightWidth,
-    borderBottomWidth
+    borderBottomWidth,
   } = this;
   const {
     opacity,
@@ -1054,7 +1136,7 @@ function drawBorders() {
     borderRightColor = 'black',
     borderRightStyle = 'solid',
     borderBottomColor = 'black',
-    borderBottomStyle = 'solid'
+    borderBottomStyle = 'solid',
   } = this.style;
   const style = {
     borderTopColor,
@@ -1072,12 +1154,9 @@ function drawBorders() {
     borderTopLeftRadius,
     borderTopRightRadius,
     borderBottomLeftRadius,
-    borderBottomRightRadius
+    borderBottomRightRadius,
   };
-  const {
-    width,
-    height
-  } = layout;
+  const { width, height } = layout;
   const rtr = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
   const rtl = Math.min(borderTopLeftRadius, 0.5 * width, 0.5 * height);
   const rbr = Math.min(borderBottomRightRadius, 0.5 * width, 0.5 * height);
@@ -1117,24 +1196,22 @@ function drawBorders() {
 }
 
 const clipBorderTop = (ctx, layout, style, rtr, rtl) => {
-  const {
-    top,
-    left,
-    width,
-    height
-  } = layout;
-  const {
-    borderTopWidth,
-    borderRightWidth,
-    borderLeftWidth
-  } = style; // Clip outer top border edge
+  const { top, left, width, height } = layout;
+  const { borderTopWidth, borderRightWidth, borderLeftWidth } = style; // Clip outer top border edge
 
   ctx.moveTo(left + rtl, top);
   ctx.lineTo(left + width - rtr, top); // Ellipse coefficients outer top right cap
 
   const c0 = rtr * (1.0 - KAPPA); // Clip outer top right cap
 
-  ctx.bezierCurveTo(left + width - c0, top, left + width, top + c0, left + width, top + rtr); // Move down in case the margin exceedes the radius
+  ctx.bezierCurveTo(
+    left + width - c0,
+    top,
+    left + width,
+    top + c0,
+    left + width,
+    top + rtr,
+  ); // Move down in case the margin exceedes the radius
 
   const topRightYCoord = top + Math.max(borderTopWidth, rtr);
   ctx.lineTo(left + width, topRightYCoord); // Clip inner top right cap
@@ -1146,7 +1223,14 @@ const clipBorderTop = (ctx, layout, style, rtr, rtl) => {
   const c1 = innerTopRightRadiusX * (1.0 - KAPPA);
   const c2 = innerTopRightRadiusY * (1.0 - KAPPA); // Clip inner top right cap
 
-  ctx.bezierCurveTo(left + width - borderRightWidth, top + borderTopWidth + c2, left + width - borderRightWidth - c1, top + borderTopWidth, left + width - borderRightWidth - innerTopRightRadiusX, top + borderTopWidth); // Clip inner top border edge
+  ctx.bezierCurveTo(
+    left + width - borderRightWidth,
+    top + borderTopWidth + c2,
+    left + width - borderRightWidth - c1,
+    top + borderTopWidth,
+    left + width - borderRightWidth - innerTopRightRadiusX,
+    top + borderTopWidth,
+  ); // Clip inner top border edge
 
   ctx.lineTo(left + Math.max(rtl, borderLeftWidth), top + borderTopWidth); // Ellipse coefficients inner top left cap
 
@@ -1156,7 +1240,14 @@ const clipBorderTop = (ctx, layout, style, rtr, rtl) => {
   const c4 = innerTopLeftRadiusY * (1.0 - KAPPA);
   const topLeftYCoord = top + Math.max(borderTopWidth, rtl); // Clip inner top left cap
 
-  ctx.bezierCurveTo(left + borderLeftWidth + c3, top + borderTopWidth, left + borderLeftWidth, top + borderTopWidth + c4, left + borderLeftWidth, topLeftYCoord);
+  ctx.bezierCurveTo(
+    left + borderLeftWidth + c3,
+    top + borderTopWidth,
+    left + borderLeftWidth,
+    top + borderTopWidth + c4,
+    left + borderLeftWidth,
+    topLeftYCoord,
+  );
   ctx.lineTo(left, topLeftYCoord); // Move down in case the margin exceedes the radius
 
   ctx.lineTo(left, top + rtl); // Ellipse coefficients outer top left cap
@@ -1189,34 +1280,39 @@ const clipBorderTop = (ctx, layout, style, rtr, rtl) => {
 };
 
 const fillBorderTop = (ctx, layout, style, rtr, rtl) => {
-  const {
-    top,
-    left,
-    width
-  } = layout;
+  const { top, left, width } = layout;
   const {
     borderTopColor,
     borderTopWidth,
     borderTopStyle,
     borderRightWidth,
-    borderLeftWidth
+    borderLeftWidth,
   } = style;
   const c0 = rtl * (1.0 - KAPPA);
   const c1 = rtr * (1.0 - KAPPA);
   ctx.moveTo(left, top + Math.max(rtl, borderTopWidth));
   ctx.bezierCurveTo(left, top + c0, left + c0, top, left + rtl, top);
   ctx.lineTo(left + width - rtr, top);
-  ctx.bezierCurveTo(left + width - c1, top, left + width, top + c1, left + width, top + rtr);
+  ctx.bezierCurveTo(
+    left + width - c1,
+    top,
+    left + width,
+    top + c1,
+    left + width,
+    top + rtr,
+  );
   ctx.strokeColor(borderTopColor);
-  ctx.lineWidth(Math.max(borderRightWidth, borderTopWidth, borderLeftWidth) * 2);
+  ctx.lineWidth(
+    Math.max(borderRightWidth, borderTopWidth, borderLeftWidth) * 2,
+  );
 
   if (borderTopStyle === 'dashed') {
     ctx.dash(borderTopWidth * 2, {
-      space: borderTopWidth * 1.2
+      space: borderTopWidth * 1.2,
     });
   } else if (borderTopStyle === 'dotted') {
     ctx.dash(borderTopWidth, {
-      space: borderTopWidth * 1.2
+      space: borderTopWidth * 1.2,
     });
   }
 
@@ -1225,24 +1321,22 @@ const fillBorderTop = (ctx, layout, style, rtr, rtl) => {
 };
 
 const clipBorderRight = (ctx, layout, style, rtr, rbr) => {
-  const {
-    top,
-    left,
-    width,
-    height
-  } = layout;
-  const {
-    borderTopWidth,
-    borderRightWidth,
-    borderBottomWidth
-  } = style; // Clip outer right border edge
+  const { top, left, width, height } = layout;
+  const { borderTopWidth, borderRightWidth, borderBottomWidth } = style; // Clip outer right border edge
 
   ctx.moveTo(left + width, top + rtr);
   ctx.lineTo(left + width, top + height - rbr); // Ellipse coefficients outer bottom right cap
 
   const c0 = rbr * (1.0 - KAPPA); // Clip outer top right cap
 
-  ctx.bezierCurveTo(left + width, top + height - c0, left + width - c0, top + height, left + width - rbr, top + height); // Move left in case the margin exceedes the radius
+  ctx.bezierCurveTo(
+    left + width,
+    top + height - c0,
+    left + width - c0,
+    top + height,
+    left + width - rbr,
+    top + height,
+  ); // Move left in case the margin exceedes the radius
 
   const topBottomXCoord = left + width - Math.max(borderRightWidth, rbr);
   ctx.lineTo(topBottomXCoord, top + height); // Clip inner bottom right cap
@@ -1254,9 +1348,19 @@ const clipBorderRight = (ctx, layout, style, rtr, rbr) => {
   const c1 = innerBottomRightRadiusX * (1.0 - KAPPA);
   const c2 = innerBottomRightRadiusY * (1.0 - KAPPA); // Clip inner top right cap
 
-  ctx.bezierCurveTo(left + width - borderRightWidth - c1, top + height - borderBottomWidth, left + width - borderRightWidth, top + height - borderBottomWidth - c2, left + width - borderRightWidth, top + height - Math.max(rbr, borderBottomWidth)); // Clip inner right border edge
+  ctx.bezierCurveTo(
+    left + width - borderRightWidth - c1,
+    top + height - borderBottomWidth,
+    left + width - borderRightWidth,
+    top + height - borderBottomWidth - c2,
+    left + width - borderRightWidth,
+    top + height - Math.max(rbr, borderBottomWidth),
+  ); // Clip inner right border edge
 
-  ctx.lineTo(left + width - borderRightWidth, top + Math.max(rtr, borderTopWidth)); // Ellipse coefficients inner top right cap
+  ctx.lineTo(
+    left + width - borderRightWidth,
+    top + Math.max(rtr, borderTopWidth),
+  ); // Ellipse coefficients inner top right cap
 
   const innerTopRightRadiusX = Math.max(rtr - borderRightWidth, 0);
   const innerTopRightRadiusY = Math.max(rtr - borderTopWidth, 0);
@@ -1264,14 +1368,28 @@ const clipBorderRight = (ctx, layout, style, rtr, rbr) => {
   const c4 = innerTopRightRadiusY * (1.0 - KAPPA);
   const topRightXCoord = left + width - Math.max(rtr, borderRightWidth); // Clip inner top left cap
 
-  ctx.bezierCurveTo(left + width - borderRightWidth, top + borderTopWidth + c4, left + width - borderRightWidth - c3, top + borderTopWidth, topRightXCoord, top + borderTopWidth);
+  ctx.bezierCurveTo(
+    left + width - borderRightWidth,
+    top + borderTopWidth + c4,
+    left + width - borderRightWidth - c3,
+    top + borderTopWidth,
+    topRightXCoord,
+    top + borderTopWidth,
+  );
   ctx.lineTo(topRightXCoord, top); // Move right in case the margin exceedes the radius
 
   ctx.lineTo(left + width - rtr, top); // Ellipse coefficients outer top right cap
 
   const c5 = rtr * (1.0 - KAPPA); // Clip outer top right cap
 
-  ctx.bezierCurveTo(left + width - c5, top, left + width, top + c5, left + width, top + rtr);
+  ctx.bezierCurveTo(
+    left + width - c5,
+    top,
+    left + width,
+    top + c5,
+    left + width,
+    top + rtr,
+  );
   ctx.closePath();
   ctx.clip(); // Clip border right cap joins
 
@@ -1297,35 +1415,46 @@ const clipBorderRight = (ctx, layout, style, rtr, rbr) => {
 };
 
 const fillBorderRight = (ctx, layout, style, rtr, rbr) => {
-  const {
-    top,
-    left,
-    width,
-    height
-  } = layout;
+  const { top, left, width, height } = layout;
   const {
     borderRightColor,
     borderRightStyle,
     borderRightWidth,
     borderTopWidth,
-    borderBottomWidth
+    borderBottomWidth,
   } = style;
   const c0 = rbr * (1.0 - KAPPA);
   const c1 = rtr * (1.0 - KAPPA);
   ctx.moveTo(left + width - rtr, top);
-  ctx.bezierCurveTo(left + width - c1, top, left + width, top + c1, left + width, top + rtr);
+  ctx.bezierCurveTo(
+    left + width - c1,
+    top,
+    left + width,
+    top + c1,
+    left + width,
+    top + rtr,
+  );
   ctx.lineTo(left + width, top + height - rbr);
-  ctx.bezierCurveTo(left + width, top + height - c0, left + width - c0, top + height, left + width - rbr, top + height);
+  ctx.bezierCurveTo(
+    left + width,
+    top + height - c0,
+    left + width - c0,
+    top + height,
+    left + width - rbr,
+    top + height,
+  );
   ctx.strokeColor(borderRightColor);
-  ctx.lineWidth(Math.max(borderRightWidth, borderTopWidth, borderBottomWidth) * 2);
+  ctx.lineWidth(
+    Math.max(borderRightWidth, borderTopWidth, borderBottomWidth) * 2,
+  );
 
   if (borderRightStyle === 'dashed') {
     ctx.dash(borderRightWidth * 2, {
-      space: borderRightWidth * 1.2
+      space: borderRightWidth * 1.2,
     });
   } else if (borderRightStyle === 'dotted') {
     ctx.dash(borderRightWidth, {
-      space: borderRightWidth * 1.2
+      space: borderRightWidth * 1.2,
     });
   }
 
@@ -1334,24 +1463,22 @@ const fillBorderRight = (ctx, layout, style, rtr, rbr) => {
 };
 
 const clipBorderBottom = (ctx, layout, style, rbl, rbr) => {
-  const {
-    top,
-    left,
-    width,
-    height
-  } = layout;
-  const {
-    borderBottomWidth,
-    borderRightWidth,
-    borderLeftWidth
-  } = style; // Clip outer top border edge
+  const { top, left, width, height } = layout;
+  const { borderBottomWidth, borderRightWidth, borderLeftWidth } = style; // Clip outer top border edge
 
   ctx.moveTo(left + width - rbr, top + height);
   ctx.lineTo(left + rbl, top + height); // Ellipse coefficients outer top right cap
 
   const c0 = rbl * (1.0 - KAPPA); // Clip outer top right cap
 
-  ctx.bezierCurveTo(left + c0, top + height, left, top + height - c0, left, top + height - rbl); // Move up in case the margin exceedes the radius
+  ctx.bezierCurveTo(
+    left + c0,
+    top + height,
+    left,
+    top + height - c0,
+    left,
+    top + height - rbl,
+  ); // Move up in case the margin exceedes the radius
 
   const bottomLeftYCoord = top + height - Math.max(borderBottomWidth, rbl);
   ctx.lineTo(left, bottomLeftYCoord); // Clip inner bottom left cap
@@ -1363,9 +1490,19 @@ const clipBorderBottom = (ctx, layout, style, rbl, rbr) => {
   const c1 = innerBottomLeftRadiusX * (1.0 - KAPPA);
   const c2 = innerBottomLeftRadiusY * (1.0 - KAPPA); // Clip inner bottom left cap
 
-  ctx.bezierCurveTo(left + borderLeftWidth, top + height - borderBottomWidth - c2, left + borderLeftWidth + c1, top + height - borderBottomWidth, left + borderLeftWidth + innerBottomLeftRadiusX, top + height - borderBottomWidth); // Clip inner bottom border edge
+  ctx.bezierCurveTo(
+    left + borderLeftWidth,
+    top + height - borderBottomWidth - c2,
+    left + borderLeftWidth + c1,
+    top + height - borderBottomWidth,
+    left + borderLeftWidth + innerBottomLeftRadiusX,
+    top + height - borderBottomWidth,
+  ); // Clip inner bottom border edge
 
-  ctx.lineTo(left + width - Math.max(rbr, borderRightWidth), top + height - borderBottomWidth); // Ellipse coefficients inner top left cap
+  ctx.lineTo(
+    left + width - Math.max(rbr, borderRightWidth),
+    top + height - borderBottomWidth,
+  ); // Ellipse coefficients inner top left cap
 
   const innerBottomRightRadiusX = Math.max(rbr - borderRightWidth, 0);
   const innerBottomRightRadiusY = Math.max(rbr - borderBottomWidth, 0);
@@ -1373,14 +1510,28 @@ const clipBorderBottom = (ctx, layout, style, rbl, rbr) => {
   const c4 = innerBottomRightRadiusY * (1.0 - KAPPA);
   const bottomRightYCoord = top + height - Math.max(borderBottomWidth, rbr); // Clip inner top left cap
 
-  ctx.bezierCurveTo(left + width - borderRightWidth - c3, top + height - borderBottomWidth, left + width - borderRightWidth, top + height - borderBottomWidth - c4, left + width - borderRightWidth, bottomRightYCoord);
+  ctx.bezierCurveTo(
+    left + width - borderRightWidth - c3,
+    top + height - borderBottomWidth,
+    left + width - borderRightWidth,
+    top + height - borderBottomWidth - c4,
+    left + width - borderRightWidth,
+    bottomRightYCoord,
+  );
   ctx.lineTo(left + width, bottomRightYCoord); // Move down in case the margin exceedes the radius
 
   ctx.lineTo(left + width, top + height - rbr); // Ellipse coefficients outer top left cap
 
   const c5 = rbr * (1.0 - KAPPA); // Clip outer top left cap
 
-  ctx.bezierCurveTo(left + width, top + height - c5, left + width - c5, top + height, left + width - rbr, top + height);
+  ctx.bezierCurveTo(
+    left + width,
+    top + height - c5,
+    left + width - c5,
+    top + height,
+    left + width - rbr,
+    top + height,
+  );
   ctx.closePath();
   ctx.clip(); // Clip border bottom cap joins
 
@@ -1406,35 +1557,46 @@ const clipBorderBottom = (ctx, layout, style, rbl, rbr) => {
 };
 
 const fillBorderBottom = (ctx, layout, style, rbl, rbr) => {
-  const {
-    top,
-    left,
-    width,
-    height
-  } = layout;
+  const { top, left, width, height } = layout;
   const {
     borderBottomColor,
     borderBottomStyle,
     borderBottomWidth,
     borderRightWidth,
-    borderLeftWidth
+    borderLeftWidth,
   } = style;
   const c0 = rbl * (1.0 - KAPPA);
   const c1 = rbr * (1.0 - KAPPA);
   ctx.moveTo(left + width, top + height - rbr);
-  ctx.bezierCurveTo(left + width, top + height - c1, left + width - c1, top + height, left + width - rbr, top + height);
+  ctx.bezierCurveTo(
+    left + width,
+    top + height - c1,
+    left + width - c1,
+    top + height,
+    left + width - rbr,
+    top + height,
+  );
   ctx.lineTo(left + rbl, top + height);
-  ctx.bezierCurveTo(left + c0, top + height, left, top + height - c0, left, top + height - rbl);
+  ctx.bezierCurveTo(
+    left + c0,
+    top + height,
+    left,
+    top + height - c0,
+    left,
+    top + height - rbl,
+  );
   ctx.strokeColor(borderBottomColor);
-  ctx.lineWidth(Math.max(borderBottomWidth, borderRightWidth, borderLeftWidth) * 2);
+  ctx.lineWidth(
+    Math.max(borderBottomWidth, borderRightWidth, borderLeftWidth) * 2,
+  );
 
   if (borderBottomStyle === 'dashed') {
     ctx.dash(borderBottomWidth * 2, {
-      space: borderBottomWidth * 1.2
+      space: borderBottomWidth * 1.2,
     });
   } else if (borderBottomStyle === 'dotted') {
     ctx.dash(borderBottomWidth, {
-      space: borderBottomWidth * 1.2
+      space: borderBottomWidth * 1.2,
     });
   }
 
@@ -1443,17 +1605,8 @@ const fillBorderBottom = (ctx, layout, style, rbl, rbr) => {
 };
 
 const clipBorderLeft = (ctx, layout, style, rbl, rtl) => {
-  const {
-    top,
-    left,
-    width,
-    height
-  } = layout;
-  const {
-    borderTopWidth,
-    borderLeftWidth,
-    borderBottomWidth
-  } = style; // Clip outer left border edge
+  const { top, left, width, height } = layout;
+  const { borderTopWidth, borderLeftWidth, borderBottomWidth } = style; // Clip outer left border edge
 
   ctx.moveTo(left, top + height - rbl);
   ctx.lineTo(left, top + rtl); // Ellipse coefficients outer top left cap
@@ -1472,9 +1625,19 @@ const clipBorderLeft = (ctx, layout, style, rbl, rtl) => {
   const c1 = innerTopLeftRadiusX * (1.0 - KAPPA);
   const c2 = innerTopLeftRadiusY * (1.0 - KAPPA); // Clip inner top right cap
 
-  ctx.bezierCurveTo(left + borderLeftWidth + c1, top + borderTopWidth, left + borderLeftWidth, top + borderTopWidth + c2, left + borderLeftWidth, top + Math.max(rtl, borderTopWidth)); // Clip inner left border edge
+  ctx.bezierCurveTo(
+    left + borderLeftWidth + c1,
+    top + borderTopWidth,
+    left + borderLeftWidth,
+    top + borderTopWidth + c2,
+    left + borderLeftWidth,
+    top + Math.max(rtl, borderTopWidth),
+  ); // Clip inner left border edge
 
-  ctx.lineTo(left + borderLeftWidth, top + height - Math.max(rbl, borderBottomWidth)); // Ellipse coefficients inner bottom left cap
+  ctx.lineTo(
+    left + borderLeftWidth,
+    top + height - Math.max(rbl, borderBottomWidth),
+  ); // Ellipse coefficients inner bottom left cap
 
   const innerBottomLeftRadiusX = Math.max(rbl - borderLeftWidth, 0);
   const innerBottomLeftRadiusY = Math.max(rbl - borderBottomWidth, 0);
@@ -1482,14 +1645,28 @@ const clipBorderLeft = (ctx, layout, style, rbl, rtl) => {
   const c4 = innerBottomLeftRadiusY * (1.0 - KAPPA);
   const bottomLeftXCoord = left + Math.max(rbl, borderLeftWidth); // Clip inner top left cap
 
-  ctx.bezierCurveTo(left + borderLeftWidth, top + height - borderBottomWidth - c4, left + borderLeftWidth + c3, top + height - borderBottomWidth, bottomLeftXCoord, top + height - borderBottomWidth);
+  ctx.bezierCurveTo(
+    left + borderLeftWidth,
+    top + height - borderBottomWidth - c4,
+    left + borderLeftWidth + c3,
+    top + height - borderBottomWidth,
+    bottomLeftXCoord,
+    top + height - borderBottomWidth,
+  );
   ctx.lineTo(bottomLeftXCoord, top + height); // Move left in case the margin exceedes the radius
 
   ctx.lineTo(left + rbl, top + height); // Ellipse coefficients outer top right cap
 
   const c5 = rbl * (1.0 - KAPPA); // Clip outer top right cap
 
-  ctx.bezierCurveTo(left + c5, top + height, left, top + height - c5, left, top + height - rbl);
+  ctx.bezierCurveTo(
+    left + c5,
+    top + height,
+    left,
+    top + height - c5,
+    left,
+    top + height - rbl,
+  );
   ctx.closePath();
   ctx.clip(); // Clip border right cap joins
 
@@ -1515,34 +1692,39 @@ const clipBorderLeft = (ctx, layout, style, rbl, rtl) => {
 };
 
 const fillBorderLeft = (ctx, layout, style, rbl, rtl) => {
-  const {
-    top,
-    left,
-    height
-  } = layout;
+  const { top, left, height } = layout;
   const {
     borderLeftColor,
     borderLeftStyle,
     borderLeftWidth,
     borderTopWidth,
-    borderBottomWidth
+    borderBottomWidth,
   } = style;
   const c0 = rbl * (1.0 - KAPPA);
   const c1 = rtl * (1.0 - KAPPA);
   ctx.moveTo(left + rbl, top + height);
-  ctx.bezierCurveTo(left + c0, top + height, left, top + height - c0, left, top + height - rbl);
+  ctx.bezierCurveTo(
+    left + c0,
+    top + height,
+    left,
+    top + height - c0,
+    left,
+    top + height - rbl,
+  );
   ctx.lineTo(left, top + rtl);
   ctx.bezierCurveTo(left, top + c1, left + c1, top, left + rtl, top);
   ctx.strokeColor(borderLeftColor);
-  ctx.lineWidth(Math.max(borderLeftWidth, borderTopWidth, borderBottomWidth) * 2);
+  ctx.lineWidth(
+    Math.max(borderLeftWidth, borderTopWidth, borderBottomWidth) * 2,
+  );
 
   if (borderLeftStyle === 'dashed') {
     ctx.dash(borderLeftWidth * 2, {
-      space: borderLeftWidth * 1.2
+      space: borderLeftWidth * 1.2,
     });
   } else if (borderLeftStyle === 'dotted') {
     ctx.dash(borderLeftWidth, {
-      space: borderLeftWidth * 1.2
+      space: borderLeftWidth * 1.2,
     });
   }
 
@@ -1551,7 +1733,7 @@ const fillBorderLeft = (ctx, layout, style, rbl, rtl) => {
 };
 
 var Borders = {
-  drawBorders
+  drawBorders,
 };
 
 // This constant is used to approximate a symmetrical arc using a cubic
@@ -1559,43 +1741,65 @@ var Borders = {
 const KAPPA$1 = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 const Clipping = {
   clip() {
-    const {
-      top,
-      left,
-      width,
-      height
-    } = this.getAbsoluteLayout();
+    const { top, left, width, height } = this.getAbsoluteLayout();
     const {
       borderTopLeftRadius = 0,
       borderTopRightRadius = 0,
       borderBottomRightRadius = 0,
-      borderBottomLeftRadius = 0
+      borderBottomLeftRadius = 0,
     } = this.style; // Border top
 
     const rtr = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
     const ctr = rtr * (1.0 - KAPPA$1);
     this.root.instance.moveTo(left + rtr, top);
     this.root.instance.lineTo(left + width - rtr, top);
-    this.root.instance.bezierCurveTo(left + width - ctr, top, left + width, top + ctr, left + width, top + rtr); // Border right
+    this.root.instance.bezierCurveTo(
+      left + width - ctr,
+      top,
+      left + width,
+      top + ctr,
+      left + width,
+      top + rtr,
+    ); // Border right
 
     const rbr = Math.min(borderBottomRightRadius, 0.5 * width, 0.5 * height);
     const cbr = rbr * (1.0 - KAPPA$1);
     this.root.instance.lineTo(left + width, top + height - rbr);
-    this.root.instance.bezierCurveTo(left + width, top + height - cbr, left + width - cbr, top + height, left + width - rbr, top + height); // Border bottom
+    this.root.instance.bezierCurveTo(
+      left + width,
+      top + height - cbr,
+      left + width - cbr,
+      top + height,
+      left + width - rbr,
+      top + height,
+    ); // Border bottom
 
     const rbl = Math.min(borderBottomLeftRadius, 0.5 * width, 0.5 * height);
     const cbl = rbl * (1.0 - KAPPA$1);
     this.root.instance.lineTo(left + rbl, top + height);
-    this.root.instance.bezierCurveTo(left + cbl, top + height, left, top + height - cbl, left, top + height - rbl); // Border left
+    this.root.instance.bezierCurveTo(
+      left + cbl,
+      top + height,
+      left,
+      top + height - cbl,
+      left,
+      top + height - rbl,
+    ); // Border left
 
     const rtl = Math.min(borderTopLeftRadius, 0.5 * width, 0.5 * height);
     const ctl = rtl * (1.0 - KAPPA$1);
     this.root.instance.lineTo(left, top + rtl);
-    this.root.instance.bezierCurveTo(left, top + ctl, left + ctl, top, left + rtl, top);
+    this.root.instance.bezierCurveTo(
+      left,
+      top + ctl,
+      left + ctl,
+      top,
+      left + rtl,
+      top,
+    );
     this.root.instance.closePath();
     this.root.instance.clip();
-  }
-
+  },
 };
 
 const getRotation = transform => {
@@ -1603,7 +1807,7 @@ const getRotation = transform => {
 
   if (match && match[1] && match[2]) {
     const value = match[1];
-    return match[2] === 'rad' ? value * 180 / Math.PI : value;
+    return match[2] === 'rad' ? (value * 180) / Math.PI : value;
   }
 
   return 0;
@@ -1611,7 +1815,9 @@ const getRotation = transform => {
 
 const getTranslateX = transform => {
   const matchX = /translateX\((-?\d+\.?d*)\)/g.exec(transform);
-  const matchGeneric = /translate\((-?\d+\.?d*).*,\s*(-?\d+\.?d*).*\)/g.exec(transform);
+  const matchGeneric = /translate\((-?\d+\.?d*).*,\s*(-?\d+\.?d*).*\)/g.exec(
+    transform,
+  );
   if (matchX && matchX[1]) return matchX[1];
   if (matchGeneric && matchGeneric[1]) return matchGeneric[1];
   return 0;
@@ -1619,7 +1825,9 @@ const getTranslateX = transform => {
 
 const getTranslateY = transform => {
   const matchY = /translateY\((-?\d+\.?\d*)\)/g.exec(transform);
-  const matchGeneric = /translate\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(transform);
+  const matchGeneric = /translate\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(
+    transform,
+  );
   if (matchY && matchY[1]) return matchY[1];
   if (matchGeneric && matchGeneric[2]) return matchGeneric[2];
   return 0;
@@ -1627,7 +1835,9 @@ const getTranslateY = transform => {
 
 const getScaleX = transform => {
   const matchX = /scaleX\((-?\d+\.?\d*)\)/g.exec(transform);
-  const matchGeneric = /scale\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(transform);
+  const matchGeneric = /scale\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(
+    transform,
+  );
   if (matchX && matchX[1]) return matchX[1];
   if (matchGeneric && matchGeneric[1]) return matchGeneric[1];
   return 1;
@@ -1635,14 +1845,18 @@ const getScaleX = transform => {
 
 const getScaleY = transform => {
   const matchY = /scaleY\((-?\d+\.?\d*)\)/g.exec(transform);
-  const matchGeneric = /scale\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(transform);
+  const matchGeneric = /scale\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(
+    transform,
+  );
   if (matchY && matchY[1]) return matchY[1];
   if (matchGeneric && matchGeneric[2]) return matchGeneric[2];
   return 1;
 };
 
 const getMatrix = transform => {
-  const match = /matrix\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)/g.exec(transform);
+  const match = /matrix\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)/g.exec(
+    transform,
+  );
   if (match) return match.slice(1, 7);
   return null;
 };
@@ -1650,32 +1864,36 @@ const getMatrix = transform => {
 const applySingleTransformation = (element, transform, origin) => {
   if (/rotate/g.test(transform)) {
     element.root.instance.rotate(getRotation(transform), {
-      origin
+      origin,
     });
   } else if (/scaleX/g.test(transform)) {
     element.root.instance.scale(getScaleX(transform), 1, {
-      origin
+      origin,
     });
   } else if (/scaleY/g.test(transform)) {
     element.root.instance.scale(1, getScaleY(transform), {
-      origin
+      origin,
     });
   } else if (/scale/g.test(transform)) {
     element.root.instance.scale(getScaleX(transform), getScaleY(transform), {
-      origin
+      origin,
     });
   } else if (/translateX/g.test(transform)) {
     element.root.instance.translate(getTranslateX(transform), 1, {
-      origin
+      origin,
     });
   } else if (/translateY/g.test(transform)) {
     element.root.instance.translate(1, getTranslateY(transform), {
-      origin
+      origin,
     });
   } else if (/translate/g.test(transform)) {
-    element.root.instance.translate(getTranslateX(transform), getTranslateY(transform), {
-      origin
-    });
+    element.root.instance.translate(
+      getTranslateX(transform),
+      getTranslateY(transform),
+      {
+        origin,
+      },
+    );
   } else if (/matrix/g.test(transform)) {
     element.root.instance.transform(...getMatrix(transform));
   }
@@ -1686,13 +1904,12 @@ const Transformations = {
     let match;
     const re = /[a-zA-Z]+\([^)]+\)/g;
     const origin = this.origin;
-    const transform = this.style && this.style.transform || '';
+    const transform = (this.style && this.style.transform) || '';
 
     while ((match = re.exec(transform)) != null) {
       applySingleTransformation(this, match[0], origin);
     }
-  }
-
+  },
 };
 
 function printWarning(format, ...args) {
@@ -1710,24 +1927,47 @@ function printWarning(format, ...args) {
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
-const warning = __DEV__ ? (condition, format, ...args) => {
-  if (format === undefined) {
-    throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-  }
+const warning = __DEV__
+  ? (condition, format, ...args) => {
+      if (format === undefined) {
+        throw new Error(
+          '`warning(condition, format, ...args)` requires a warning ' +
+            'message argument',
+        );
+      }
 
-  if (!condition) {
-    printWarning(format, ...args);
-  }
-} : () => {};
+      if (!condition) {
+        printWarning(format, ...args);
+      }
+    }
+  : () => {};
 
-const inheritedProperties = ['color', 'fontFamily', 'fontSize', 'fontStyle', 'fontWeight', 'letterSpacing', 'opacity', 'textDecoration', 'lineHeight', 'textAlign', 'visibility', 'wordSpacing'];
+const inheritedProperties = [
+  'color',
+  'fontFamily',
+  'fontSize',
+  'fontStyle',
+  'fontWeight',
+  'letterSpacing',
+  'opacity',
+  'textDecoration',
+  'lineHeight',
+  'textAlign',
+  'visibility',
+  'wordSpacing',
+];
 
 class Base extends Node {
   constructor(root, props) {
     super();
     this.root = root;
     this.style = {};
-    this.props = merge({}, this.constructor.defaultProps, Base.defaultProps, props);
+    this.props = merge(
+      {},
+      this.constructor.defaultProps,
+      Base.defaultProps,
+      props,
+    );
     warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
   }
 
@@ -1756,16 +1996,8 @@ class Base extends Node {
   }
 
   get origin() {
-    const {
-      transformOriginX,
-      transformOriginY
-    } = this.style;
-    const {
-      left,
-      top,
-      width,
-      height
-    } = this.getAbsoluteLayout();
+    const { transformOriginX, transformOriginY } = this.style;
+    const { left, top, width, height } = this.getAbsoluteLayout();
     const percentX = matchPercent(transformOriginX);
     const percentY = matchPercent(transformOriginY);
     const offsetX = percentX ? width * percentX.percent : transformOriginX;
@@ -1793,7 +2025,12 @@ class Base extends Node {
   }
 
   update(newProps) {
-    this.props = merge({}, this.constructor.defaultProps, Base.defaultProps, newProps);
+    this.props = merge(
+      {},
+      this.constructor.defaultProps,
+      Base.defaultProps,
+      newProps,
+    );
     this.root.markDirty();
   }
 
@@ -1808,19 +2045,16 @@ class Base extends Node {
   }
 
   resolveStyles() {
-    const {
-      size,
-      orientation
-    } = this.page;
+    const { size, orientation } = this.page;
     const ownStyles = StyleSheet.resolve(this.props.style, {
       orientation,
       width: size.width,
-      height: size.height
+      height: size.height,
     });
-    const inheritedStyles = this.parent ? pick(this.parent.style, inheritedProperties) : {};
-    return { ...inheritedStyles,
-      ...ownStyles
-    };
+    const inheritedStyles = this.parent
+      ? pick(this.parent.style, inheritedProperties)
+      : {};
+    return { ...inheritedStyles, ...ownStyles };
   }
 
   applyStyle(attribute, value) {
@@ -1858,7 +2092,6 @@ class Base extends Node {
         if (isFunction(this.layout[setter])) {
           this.layout[setter](value);
         }
-
     }
   }
 
@@ -1873,26 +2106,23 @@ class Base extends Node {
       height: layout.height,
       children: this.children.map(c => {
         return c.getLayoutData();
-      })
+      }),
     };
   }
 
   drawBackgroundColor() {
-    const {
-      backgroundColor,
-      opacity = 1
-    } = this.style;
-    const {
-      left,
-      top,
-      width,
-      height
-    } = this.getAbsoluteLayout();
+    const { backgroundColor, opacity = 1 } = this.style;
+    const { left, top, width, height } = this.getAbsoluteLayout();
 
     if (backgroundColor) {
       this.root.instance.save();
       this.clip();
-      this.root.instance.fillOpacity(opacity).fillColor(backgroundColor).rect(left, top, width, height).fill().restore();
+      this.root.instance
+        .fillOpacity(opacity)
+        .fillColor(backgroundColor)
+        .rect(left, top, width, height)
+        .fill()
+        .restore();
     }
   }
 
@@ -1930,7 +2160,6 @@ class Base extends Node {
       await absoluteChilds[i].render();
     }
   }
-
 }
 
 Base.defaultProps = {
@@ -1940,9 +2169,9 @@ Base.defaultProps = {
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
     transformOriginX: '50%',
-    transformOriginY: '50%'
+    transformOriginY: '50%',
   },
-  minPresenceAhead: 0
+  minPresenceAhead: 0,
 };
 Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
@@ -1957,9 +2186,13 @@ const LINE_WIDTH = 0.5;
 const LINE_COLOR = 'gray';
 const GRID_COLOR = '#ababab';
 
-const range = (max, steps) => Array.from({
-  length: Math.ceil(max / steps)
-}, (_, i) => i * steps);
+const range = (max, steps) =>
+  Array.from(
+    {
+      length: Math.ceil(max / steps),
+    },
+    (_, i) => i * steps,
+  );
 
 const matchPercentage = value => {
   const match = matchPercent(value);
@@ -1980,7 +2213,10 @@ const Ruler = {
   },
 
   getHorizontalSteps() {
-    const value = this.props.horizontalRulerSteps || this.props.rulerSteps || DEFAULT_RULER_STEPS;
+    const value =
+      this.props.horizontalRulerSteps ||
+      this.props.rulerSteps ||
+      DEFAULT_RULER_STEPS;
 
     if (typeof value === 'string') {
       const percentage = matchPercentage(value);
@@ -1997,13 +2233,17 @@ const Ruler = {
   },
 
   getVerticalSteps() {
-    const value = this.props.verticalRulerSteps || this.props.rulerSteps || DEFAULT_RULER_STEPS;
+    const value =
+      this.props.verticalRulerSteps ||
+      this.props.rulerSteps ||
+      DEFAULT_RULER_STEPS;
 
     if (typeof value === 'string') {
       const percentage = matchPercentage(value);
 
       if (percentage) {
-        const height = this.height - (this.hasHorizontalRuler() ? RULER_WIDTH : 0);
+        const height =
+          this.height - (this.hasHorizontalRuler() ? RULER_WIDTH : 0);
         return height / percentage;
       }
 
@@ -2018,12 +2258,18 @@ const Ruler = {
     const hasVerticalRuler = this.hasVerticalRuler();
 
     if (hasHorizontalRuler || hasVerticalRuler) {
-      this.root.instance.save().lineWidth(LINE_WIDTH).fontSize(RULER_FONT_SIZE).opacity(1);
+      this.root.instance
+        .save()
+        .lineWidth(LINE_WIDTH)
+        .fontSize(RULER_FONT_SIZE)
+        .opacity(1);
       if (hasHorizontalRuler) this.drawHorizontalRuler();
       if (hasVerticalRuler) this.drawVerticalRuler();
 
       if (hasHorizontalRuler && hasVerticalRuler) {
-        this.root.instance.rect(0, 0, RULER_WIDTH - LINE_WIDTH, RULER_WIDTH - LINE_WIDTH).fill(RULER_COLOR);
+        this.root.instance
+          .rect(0, 0, RULER_WIDTH - LINE_WIDTH, RULER_WIDTH - LINE_WIDTH)
+          .fill(RULER_COLOR);
       }
 
       this.root.instance.restore();
@@ -2032,32 +2278,57 @@ const Ruler = {
 
   drawHorizontalRuler() {
     const offset = this.hasVerticalRuler() ? RULER_WIDTH : 0;
-    this.root.instance.rect(offset, 0, this.width, RULER_WIDTH).fill(RULER_COLOR).moveTo(this.hasVerticalRuler() ? RULER_WIDTH : 0, RULER_WIDTH).lineTo(this.width, RULER_WIDTH).stroke(LINE_COLOR);
+    this.root.instance
+      .rect(offset, 0, this.width, RULER_WIDTH)
+      .fill(RULER_COLOR)
+      .moveTo(this.hasVerticalRuler() ? RULER_WIDTH : 0, RULER_WIDTH)
+      .lineTo(this.width, RULER_WIDTH)
+      .stroke(LINE_COLOR);
     const hRange = range(this.width, this.getHorizontalSteps());
     hRange.map(step => {
-      this.root.instance.moveTo(offset + step, 0).lineTo(offset + step, RULER_WIDTH).stroke(LINE_COLOR).fillColor('black').text(`${Math.round(step)}`, offset + step + 1, 1);
+      this.root.instance
+        .moveTo(offset + step, 0)
+        .lineTo(offset + step, RULER_WIDTH)
+        .stroke(LINE_COLOR)
+        .fillColor('black')
+        .text(`${Math.round(step)}`, offset + step + 1, 1);
     });
     hRange.map(step => {
       if (step !== 0) {
-        this.root.instance.moveTo(offset + step, RULER_WIDTH).lineTo(offset + step, this.height).stroke(GRID_COLOR);
+        this.root.instance
+          .moveTo(offset + step, RULER_WIDTH)
+          .lineTo(offset + step, this.height)
+          .stroke(GRID_COLOR);
       }
     });
   },
 
   drawVerticalRuler() {
     const offset = this.hasHorizontalRuler() ? RULER_WIDTH : 0;
-    this.root.instance.rect(0, offset, RULER_WIDTH, this.height).fill(RULER_COLOR).moveTo(RULER_WIDTH, this.hasHorizontalRuler() ? RULER_WIDTH : 0).lineTo(RULER_WIDTH, this.height).stroke(LINE_COLOR);
+    this.root.instance
+      .rect(0, offset, RULER_WIDTH, this.height)
+      .fill(RULER_COLOR)
+      .moveTo(RULER_WIDTH, this.hasHorizontalRuler() ? RULER_WIDTH : 0)
+      .lineTo(RULER_WIDTH, this.height)
+      .stroke(LINE_COLOR);
     const vRange = range(this.height, this.getVerticalSteps());
     vRange.map(step => {
-      this.root.instance.moveTo(0, offset + step).lineTo(RULER_WIDTH, offset + step).stroke(LINE_COLOR).fillColor('black').text(`${Math.round(step)}`, 1, offset + step + 1);
+      this.root.instance
+        .moveTo(0, offset + step)
+        .lineTo(RULER_WIDTH, offset + step)
+        .stroke(LINE_COLOR)
+        .fillColor('black')
+        .text(`${Math.round(step)}`, 1, offset + step + 1);
     });
     vRange.map(step => {
       if (step !== 0) {
-        this.root.instance.moveTo(RULER_WIDTH, offset + step).lineTo(this.width, offset + step).stroke(GRID_COLOR);
+        this.root.instance
+          .moveTo(RULER_WIDTH, offset + step)
+          .lineTo(this.width, offset + step)
+          .stroke(GRID_COLOR);
       }
     });
-  }
-
+  },
 };
 
 class TextInstance {
@@ -2090,7 +2361,6 @@ class TextInstance {
     this.parent.container = null;
     this.root.markDirty();
   }
-
 }
 
 const PAGE_SIZES = {
@@ -2143,7 +2413,7 @@ const PAGE_SIZES = {
   FOLIO: [612.0, 936.0],
   LEGAL: [612.0, 1008.0],
   LETTER: [612.0, 792.0],
-  TABLOID: [792.0, 1224.0]
+  TABLOID: [792.0, 1224.0],
 }; // Return page size in an object { width, height } given the passed size and orientation
 // Accepts page type, arraoy or object as parameter
 
@@ -2160,13 +2430,15 @@ const getPageSize = (size, orientation = 'portrait') => {
     throw new Error(`Invalid Page size: ${size}`);
   }
 
-  return orientation === 'portrait' ? {
-    width: result[0],
-    height: result[1]
-  } : {
-    width: result[1],
-    height: result[0]
-  };
+  return orientation === 'portrait'
+    ? {
+        width: result[0],
+        height: result[1],
+      }
+    : {
+        width: result[1],
+        height: result[0],
+      };
 };
 
 class Page extends Base {
@@ -2207,8 +2479,16 @@ class Page extends Base {
   }
 
   resetMargins() {
-    if (!!this.marginTop || !!this.marginBottom || !!this.marginLeft || !!this.marginRight) {
-      warning(false, 'Margin values are not allowed on Page element. Use padding instead.');
+    if (
+      !!this.marginTop ||
+      !!this.marginBottom ||
+      !!this.marginLeft ||
+      !!this.marginRight
+    ) {
+      warning(
+        false,
+        'Margin values are not allowed on Page element. Use padding instead.',
+      );
       this.marginTop = 0;
       this.marginBottom = 0;
       this.marginLeft = 0;
@@ -2235,7 +2515,10 @@ class Page extends Base {
   }
 
   setPadding(edge, value) {
-    const dimension = edge === Yoga.EDGE_TOP || edge === Yoga.EDGE_BOTTOM ? this.size.height : this.size.width;
+    const dimension =
+      edge === Yoga.EDGE_TOP || edge === Yoga.EDGE_BOTTOM
+        ? this.size.height
+        : this.size.width;
     const match = matchPercent(value);
 
     if (match) {
@@ -2251,10 +2534,7 @@ class Page extends Base {
 
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
-      const {
-        type,
-        props
-      } = child;
+      const { type, props } = child;
 
       if (typeof child === 'string') {
         const instance = new TextInstance(this.root, child);
@@ -2315,31 +2595,31 @@ class Page extends Base {
   }
 
   async render() {
-    const {
-      instance
-    } = this.root;
+    const { instance } = this.root;
     this.height = this.size.height;
     this.calculateLayout();
     instance.addPage({
       size: [this.size.width, this.size.height],
-      margin: 0
+      margin: 0,
     });
 
     if (this.style.backgroundColor) {
-      instance.fillColor(this.style.backgroundColor).rect(0, 0, this.size.width, this.size.height).fill();
+      instance
+        .fillColor(this.style.backgroundColor)
+        .rect(0, 0, this.size.width, this.size.height)
+        .fill();
     }
 
     await this.renderChildren();
     if (this.props.debug) this.debug();
     this.renderRuler();
   }
-
 }
 
 Page.defaultProps = {
   size: 'A4',
   wrap: true,
-  orientation: 'portrait'
+  orientation: 'portrait',
 };
 Object.assign(Page.prototype, Ruler);
 
@@ -2357,16 +2637,17 @@ class View extends Base {
     if (this.props.debug) this.debug();
     this.root.instance.restore();
   }
-
 }
 
 View.defaultProps = {
-  wrap: true
+  wrap: true,
 };
 
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
-  const buffer = await (response.buffer ? response.buffer() : response.arrayBuffer());
+  const buffer = await (response.buffer
+    ? response.buffer()
+    : response.arrayBuffer());
   return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
 };
 
@@ -2386,25 +2667,23 @@ class FontSource {
     this.loading = true;
 
     if (isUrl(this.src)) {
-      const {
-        headers,
-        body,
-        method = 'GET'
-      } = this.options;
+      const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, {
         method,
         body,
-        headers
+        headers,
       });
       this.data = fontkit.create(data);
     } else {
-
-      this.data = await new Promise((resolve, reject) => fontkit.open(this.src, (err, data) => err ? reject(err) : resolve(data)));
+      this.data = await new Promise((resolve, reject) =>
+        fontkit.open(this.src, (err, data) =>
+          err ? reject(err) : resolve(data),
+        ),
+      );
     }
 
     this.loading = false;
   }
-
 }
 
 class Font {
@@ -2417,21 +2696,21 @@ class Font {
     this.sources = [];
   }
 
-  register({
-    src,
-    fontWeight,
-    fontStyle,
-    unicodeRange,
-    ...options
-  }) {
-    this.sources.push(new FontSource(src, this.fontFamily, fontStyle, fontWeight, unicodeRange, options));
+  register({ src, fontWeight, fontStyle, unicodeRange, ...options }) {
+    this.sources.push(
+      new FontSource(
+        src,
+        this.fontFamily,
+        fontStyle,
+        fontWeight,
+        unicodeRange,
+        options,
+      ),
+    );
   }
 
   resolve(descriptor) {
-    const {
-      fontWeight = 400,
-      fontStyle = 'normal'
-    } = descriptor;
+    const { fontWeight = 400, fontStyle = 'normal' } = descriptor;
     const styleSources = this.sources.filter(s => s.fontStyle === fontStyle); // Weight resolution. https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Fallback_weights
 
     const exactFit = styleSources.find(s => s.fontWeight === fontWeight);
@@ -2441,7 +2720,9 @@ class Font {
     if (fontWeight >= 400 && fontWeight <= 500) {
       const leftOffset = styleSources.filter(s => s.fontWeight <= fontWeight);
       const rightOffset = styleSources.filter(s => s.fontWeight > 500);
-      const fit = styleSources.filter(s => s.fontWeight >= fontWeight && s.fontWeight < 500);
+      const fit = styleSources.filter(
+        s => s.fontWeight >= fontWeight && s.fontWeight < 500,
+      );
       res = fit[0] || leftOffset[leftOffset.length - 1] || rightOffset[0];
     }
 
@@ -2457,31 +2738,39 @@ class Font {
     }
 
     if (!res) {
-      throw new Error(`Could not resolve font for ${this.fontFamily}, fontWeight ${fontWeight}`);
+      throw new Error(
+        `Could not resolve font for ${this.fontFamily}, fontWeight ${fontWeight}`,
+      );
     }
 
     return res;
   }
-
 }
 
 let emojiSource;
-const registerEmojiSource = ({
-  url,
-  format = 'png'
-}) => {
+const registerEmojiSource = ({ url, format = 'png' }) => {
   emojiSource = {
     url,
-    format
+    format,
   };
 };
 const getEmojiSource = () => emojiSource;
 var emoji = {
   registerEmojiSource,
-  getEmojiSource
+  getEmojiSource,
 };
 
-var standardFonts = ['Courier', 'Courier-Bold', 'Courier-Oblique', 'Helvetica', 'Helvetica-Bold', 'Helvetica-Oblique', 'Times-Roman', 'Times-Bold', 'Times-Italic'];
+var standardFonts = [
+  'Courier',
+  'Courier-Bold',
+  'Courier-Oblique',
+  'Helvetica',
+  'Helvetica-Bold',
+  'Helvetica-Oblique',
+  'Times-Roman',
+  'Times-Bold',
+  'Times-Italic',
+];
 
 let hyphenationCallback;
 const registerHyphenationCallback = callback => {
@@ -2490,7 +2779,7 @@ const registerHyphenationCallback = callback => {
 const getHyphenationCallback = () => hyphenationCallback;
 var hyphenation = {
   registerHyphenationCallback,
-  getHyphenationCallback
+  getHyphenationCallback,
 };
 
 let fonts = {};
@@ -2499,24 +2788,24 @@ const register = (src, data) => {
   if (typeof src === 'object') {
     data = src;
   } else {
-    warning(false, 'Font.register will not longer accept the font source as first argument. Please move it into the data object. For more info refer to https://react-pdf.org/fonts');
+    warning(
+      false,
+      'Font.register will not longer accept the font source as first argument. Please move it into the data object. For more info refer to https://react-pdf.org/fonts',
+    );
     data.src = src;
   }
 
-  const {
-    family
-  } = data;
+  const { family } = data;
 
   if (!fonts[family]) {
     fonts[family] = Font.create(family);
   } // Bulk loading
 
-
   if (data.fonts) {
     for (let i = 0; i < data.fonts.length; i++) {
       fonts[family].register({
         family,
-        ...data.fonts[i]
+        ...data.fonts[i],
       });
     }
   } else {
@@ -2529,32 +2818,31 @@ const getRegisteredFonts = () => fonts;
 const getRegisteredFontFamilies = () => Object.keys(fonts);
 
 const getFont = descriptor => {
-  const {
-    fontFamily
-  } = descriptor;
+  const { fontFamily } = descriptor;
   const isStandard = standardFonts.includes(fontFamily);
   if (isStandard) return null;
 
   if (!fonts[fontFamily]) {
-    throw new Error(`Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`);
+    throw new Error(
+      `Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`,
+    );
   }
 
   return fonts[fontFamily].resolve(descriptor);
 };
 
-const load = function ({
-  fontFamily,
-  ...descriptor
-}, doc, text) {
-  const fontFamilies = typeof fontFamily === 'string' ? fontFamily.split(',').map(family => family.trim()) : [...(fontFamily || [])];
+const load = function({ fontFamily, ...descriptor }, doc, text) {
+  const fontFamilies =
+    typeof fontFamily === 'string'
+      ? fontFamily.split(',').map(family => family.trim())
+      : [...(fontFamily || [])];
   const promises = [];
 
   for (const family of fontFamilies) {
     if (standardFonts.includes(family)) break;
-    const font = getFont({ ...descriptor,
-      fontFamily: family
-    });
-    const textRequiresFont = typeof text === 'string' ? text.search(font.unicodeRange) >= 0 : true; // We cache the font to avoid fetching it many times
+    const font = getFont({ ...descriptor, fontFamily: family });
+    const textRequiresFont =
+      typeof text === 'string' ? text.search(font.unicodeRange) >= 0 : true; // We cache the font to avoid fetching it many times
 
     if (textRequiresFont && !font.data && !font.loading) {
       promises.push(font.load());
@@ -2568,7 +2856,7 @@ const load = function ({
   return Promise.all(promises);
 };
 
-const reset = function () {
+const reset = function() {
   for (const font in fonts) {
     if (fonts.hasOwnProperty(font)) {
       fonts[font].data = null;
@@ -2576,7 +2864,7 @@ const reset = function () {
   }
 };
 
-const clear = function () {
+const clear = function() {
   fonts = {};
 };
 
@@ -2589,7 +2877,7 @@ var Font$1 = {
   clear,
   reset,
   ...emoji,
-  ...hyphenation
+  ...hyphenation,
 };
 
 const PROTOCOL_REGEXP = /^([a-z]+\:(\/\/)?)/i;
@@ -2618,7 +2906,7 @@ class StandardFont {
         const glyph = this.getGlyph(parseInt(g, 16));
         glyph.advanceWidth = positions[i].advanceWidth;
         return glyph;
-      })
+      }),
     };
   }
 
@@ -2634,7 +2922,7 @@ class StandardFont {
       _font: this.src,
       codePoints: [id],
       isLigature: false,
-      name: this.src.font.characterToGlyph(id)
+      name: this.src.font.characterToGlyph(id),
     };
   }
 
@@ -2657,76 +2945,87 @@ class StandardFont {
   get unitsPerEm() {
     return 1000;
   }
-
 }
 
-var fontSubstitutionEngine = (() => ({
-  Run
-}) => class FontSubstitutionEngine {
-  constructor() {
-    this.fontCache = {};
-  }
+var fontSubstitutionEngine = () => ({ Run }) =>
+  class FontSubstitutionEngine {
+    constructor() {
+      this.fontCache = {};
+    }
 
-  get fallbackFont() {
-    return this.getOrCreateFont('Helvetica');
-  }
+    get fallbackFont() {
+      return this.getOrCreateFont('Helvetica');
+    }
 
-  getOrCreateFont(name) {
-    if (this.fontCache[name]) return this.fontCache[name];
-    const font = new StandardFont(name);
-    this.fontCache[name] = font;
-    return font;
-  }
+    getOrCreateFont(name) {
+      if (this.fontCache[name]) return this.fontCache[name];
+      const font = new StandardFont(name);
+      this.fontCache[name] = font;
+      return font;
+    }
 
-  shouldFallbackToFont(codePoint, font) {
-    return !font.hasGlyphForCodePoint(codePoint) && this.fallbackFont.hasGlyphForCodePoint(codePoint);
-  }
+    shouldFallbackToFont(codePoint, font) {
+      return (
+        !font.hasGlyphForCodePoint(codePoint) &&
+        this.fallbackFont.hasGlyphForCodePoint(codePoint)
+      );
+    }
 
-  getRuns(string, runs) {
-    const res = [];
-    let lastFont = null;
-    let lastIndex = 0;
-    let index = 0;
+    getRuns(string, runs) {
+      const res = [];
+      let lastFont = null;
+      let lastIndex = 0;
+      let index = 0;
 
-    for (const run of runs) {
-      const defaultFont = typeof run.attributes.font === 'string' ? this.getOrCreateFont(run.attributes.font) : run.attributes.font;
+      for (const run of runs) {
+        const defaultFont =
+          typeof run.attributes.font === 'string'
+            ? this.getOrCreateFont(run.attributes.font)
+            : run.attributes.font;
 
-      if (string.length === 0) {
-        res.push(new Run(0, 0, {
-          font: defaultFont
-        }));
-        break;
-      }
-
-      for (const char of string.slice(run.start, run.end)) {
-        const codePoint = char.codePointAt();
-        const font = this.shouldFallbackToFont(codePoint, defaultFont) ? this.fallbackFont : defaultFont; // If the default font does not have a glyph and the fallback font does, we use it
-
-        if (font !== lastFont) {
-          if (lastFont) {
-            res.push(new Run(lastIndex, index, {
-              font: lastFont
-            }));
-          }
-
-          lastFont = font;
-          lastIndex = index;
+        if (string.length === 0) {
+          res.push(
+            new Run(0, 0, {
+              font: defaultFont,
+            }),
+          );
+          break;
         }
 
-        index += char.length;
+        for (const char of string.slice(run.start, run.end)) {
+          const codePoint = char.codePointAt();
+          const font = this.shouldFallbackToFont(codePoint, defaultFont)
+            ? this.fallbackFont
+            : defaultFont; // If the default font does not have a glyph and the fallback font does, we use it
+
+          if (font !== lastFont) {
+            if (lastFont) {
+              res.push(
+                new Run(lastIndex, index, {
+                  font: lastFont,
+                }),
+              );
+            }
+
+            lastFont = font;
+            lastIndex = index;
+          }
+
+          index += char.length;
+        }
       }
+
+      if (lastIndex < string.length) {
+        res.push(
+          new Run(lastIndex, string.length, {
+            font: lastFont,
+          }),
+        );
+      }
+
+      return res;
     }
-
-    if (lastIndex < string.length) {
-      res.push(new Run(lastIndex, string.length, {
-        font: lastFont
-      }));
-    }
-
-    return res;
-  }
-
-});
+  };
 
 const createHyphenator = require('hyphen');
 
@@ -2734,29 +3033,29 @@ const pattern = require('hyphen/patterns/en-us');
 
 const SOFT_HYPHEN_HEX = '\u00ad';
 const hyphen = createHyphenator(pattern);
-var wordHyphenation = (({
-  hyphenationCallback
-}) => () => class {
-  constructor() {
-    this.cache = {};
-  }
-
-  calculateParts(word) {
-    if (word.includes(SOFT_HYPHEN_HEX)) {
-      return word.split(SOFT_HYPHEN_HEX);
+var wordHyphenation = ({ hyphenationCallback }) => () =>
+  class {
+    constructor() {
+      this.cache = {};
     }
 
-    return hyphen(word).split(SOFT_HYPHEN_HEX);
-  }
+    calculateParts(word) {
+      if (word.includes(SOFT_HYPHEN_HEX)) {
+        return word.split(SOFT_HYPHEN_HEX);
+      }
 
-  hyphenateWord(word) {
-    if (this.cache[word]) return this.cache[word];
-    const parts = hyphenationCallback ? hyphenationCallback(word) : this.calculateParts(word);
-    this.cache[word] = parts;
-    return parts;
-  }
+      return hyphen(word).split(SOFT_HYPHEN_HEX);
+    }
 
-});
+    hyphenateWord(word) {
+      if (this.cache[word]) return this.cache[word];
+      const parts = hyphenationCallback
+        ? hyphenationCallback(word)
+        : this.calculateParts(word);
+      this.cache[word] = parts;
+      return parts;
+    }
+  };
 
 class Node$1 {
   constructor(data) {
@@ -2768,7 +3067,6 @@ class Node$1 {
   toString() {
     return this.data.toString();
   }
-
 }
 
 class LinkedList {
@@ -2779,7 +3077,14 @@ class LinkedList {
   }
 
   isLinked(node) {
-    return !(node && node.prev === null && node.next === null && this.tail !== node && this.head !== node || this.isEmpty());
+    return !(
+      (node &&
+        node.prev === null &&
+        node.next === null &&
+        this.tail !== node &&
+        this.head !== node) ||
+      this.isEmpty()
+    );
   }
 
   size() {
@@ -2963,7 +3268,6 @@ class LinkedList {
     node.next = null;
     return node;
   }
-
 }
 
 LinkedList.Node = Node$1;
@@ -2979,27 +3283,37 @@ LinkedList.Node = Node$1;
 const linebreak = (nodes, lines, settings) => {
   const options = {
     demerits: {
-      line: settings && settings.demerits && settings.demerits.line || 10,
-      flagged: settings && settings.demerits && settings.demerits.flagged || 100,
-      fitness: settings && settings.demerits && settings.demerits.fitness || 3000
+      line: (settings && settings.demerits && settings.demerits.line) || 10,
+      flagged:
+        (settings && settings.demerits && settings.demerits.flagged) || 100,
+      fitness:
+        (settings && settings.demerits && settings.demerits.fitness) || 3000,
     },
-    tolerance: settings && settings.tolerance || 3
+    tolerance: (settings && settings.tolerance) || 3,
   };
   const activeNodes = new LinkedList();
   const sum = {
     width: 0,
     stretch: 0,
-    shrink: 0
+    shrink: 0,
   };
   const lineLengths = lines;
   const breaks = [];
   let tmp = {
     data: {
-      demerits: Infinity
-    }
+      demerits: Infinity,
+    },
   };
 
-  function breakpoint(position, demerits, ratio, line, fitnessClass, totals, previous) {
+  function breakpoint(
+    position,
+    demerits,
+    ratio,
+    line,
+    fitnessClass,
+    totals,
+    previous,
+  ) {
     return {
       position,
       demerits,
@@ -3009,9 +3323,9 @@ const linebreak = (nodes, lines, settings) => {
       totals: totals || {
         width: 0,
         stretch: 0,
-        shrink: 0
+        shrink: 0,
       },
-      previous
+      previous,
     };
   }
 
@@ -3021,7 +3335,10 @@ const linebreak = (nodes, lines, settings) => {
     let shrink = 0; // If the current line index is within the list of linelengths, use it, otherwise use
     // the last line length of the list.
 
-    const lineLength = currentLine < lineLengths.length ? lineLengths[currentLine - 1] : lineLengths[lineLengths.length - 1];
+    const lineLength =
+      currentLine < lineLengths.length
+        ? lineLengths[currentLine - 1]
+        : lineLengths[lineLengths.length - 1];
 
     if (nodes[end].type === 'penalty') {
       width += nodes[end].width;
@@ -3047,17 +3364,15 @@ const linebreak = (nodes, lines, settings) => {
       return linebreak.infinity;
     } // perfect match
 
-
     return 0;
   } // Add width, stretch and shrink values from the current
   // break point up to the next box or forced penalty.
-
 
   function computeSum(breakPointIndex) {
     const result = {
       width: sum.width,
       stretch: sum.stretch,
-      shrink: sum.shrink
+      shrink: sum.shrink,
     };
 
     for (let i = breakPointIndex; i < nodes.length; i += 1) {
@@ -3065,14 +3380,18 @@ const linebreak = (nodes, lines, settings) => {
         result.width += nodes[i].width;
         result.stretch += nodes[i].stretch;
         result.shrink += nodes[i].shrink;
-      } else if (nodes[i].type === 'box' || nodes[i].type === 'penalty' && nodes[i].penalty === -linebreak.infinity && i > breakPointIndex) {
+      } else if (
+        nodes[i].type === 'box' ||
+        (nodes[i].type === 'penalty' &&
+          nodes[i].penalty === -linebreak.infinity &&
+          i > breakPointIndex)
+      ) {
         break;
       }
     }
 
     return result;
   } // The main loop of the algorithm
-
 
   function mainLoop(node, index, nodes) {
     let active = activeNodes.first();
@@ -3092,47 +3411,71 @@ const linebreak = (nodes, lines, settings) => {
     // sorted by line number.
 
     while (active !== null) {
-      candidates = [{
-        demerits: Infinity
-      }, {
-        demerits: Infinity
-      }, {
-        demerits: Infinity
-      }, {
-        demerits: Infinity
-      }]; // Iterate through the linked list of active nodes to find new potential active nodes
+      candidates = [
+        {
+          demerits: Infinity,
+        },
+        {
+          demerits: Infinity,
+        },
+        {
+          demerits: Infinity,
+        },
+        {
+          demerits: Infinity,
+        },
+      ]; // Iterate through the linked list of active nodes to find new potential active nodes
       // and deactivate current active nodes.
 
       while (active !== null) {
         next = active.next;
         currentLine = active.data.line + 1;
-        ratio = computeCost(active.data.position, index, active.data, currentLine); // Deactive nodes when the distance between the current active node and the
+        ratio = computeCost(
+          active.data.position,
+          index,
+          active.data,
+          currentLine,
+        ); // Deactive nodes when the distance between the current active node and the
         // current node becomes too large (i.e. it exceeds the stretch limit and the stretch
         // ratio becomes negative) or when the current node is a forced break (i.e. the end
         // of the paragraph when we want to remove all active nodes, but possibly have a final
         // candidate active node---if the paragraph can be set using the given tolerance value.)
 
-        if (ratio < -1 || node.type === 'penalty' && node.penalty === -linebreak.infinity) {
+        if (
+          ratio < -1 ||
+          (node.type === 'penalty' && node.penalty === -linebreak.infinity)
+        ) {
           activeNodes.remove(active);
         } // If the ratio is within the valid range of -1 <= ratio <= tolerance calculate the
         // total demerits and record a candidate active node.
-
 
         if (ratio >= -1 && ratio <= options.tolerance) {
           badness = 100 * Math.pow(Math.abs(ratio), 3); // Positive penalty
 
           if (node.type === 'penalty' && node.penalty >= 0) {
-            demerits = Math.pow(options.demerits.line + badness, 2) + Math.pow(node.penalty, 2); // Negative penalty but not a forced break
-          } else if (node.type === 'penalty' && node.penalty !== -linebreak.infinity) {
-            demerits = Math.pow(options.demerits.line + badness, 2) - Math.pow(node.penalty, 2); // All other cases
+            demerits =
+              Math.pow(options.demerits.line + badness, 2) +
+              Math.pow(node.penalty, 2); // Negative penalty but not a forced break
+          } else if (
+            node.type === 'penalty' &&
+            node.penalty !== -linebreak.infinity
+          ) {
+            demerits =
+              Math.pow(options.demerits.line + badness, 2) -
+              Math.pow(node.penalty, 2); // All other cases
           } else {
             demerits = Math.pow(options.demerits.line + badness, 2);
           }
 
-          if (node.type === 'penalty' && nodes[active.data.position].type === 'penalty') {
-            demerits += options.demerits.flagged * node.flagged * nodes[active.data.position].flagged;
+          if (
+            node.type === 'penalty' &&
+            nodes[active.data.position].type === 'penalty'
+          ) {
+            demerits +=
+              options.demerits.flagged *
+              node.flagged *
+              nodes[active.data.position].flagged;
           } // Calculate the fitness class for this candidate active node.
-
 
           if (ratio < -0.5) {
             currentClass = 0;
@@ -3145,11 +3488,9 @@ const linebreak = (nodes, lines, settings) => {
           } // Add a fitness penalty to the demerits if the fitness classes of two adjacent lines
           // differ too much.
 
-
           if (Math.abs(currentClass - active.data.fitnessClass) > 1) {
             demerits += options.demerits.fitness;
           } // Add the total demerits of the active node to get the total demerits of this candidate node.
-
 
           demerits += active.data.demerits; // Only store the best candidate for each fitness class
 
@@ -3157,7 +3498,7 @@ const linebreak = (nodes, lines, settings) => {
             candidates[currentClass] = {
               active,
               demerits,
-              ratio
+              ratio,
             };
           }
         }
@@ -3176,11 +3517,25 @@ const linebreak = (nodes, lines, settings) => {
 
       tmpSum = computeSum(index);
 
-      for (fitnessClass = 0; fitnessClass < candidates.length; fitnessClass += 1) {
+      for (
+        fitnessClass = 0;
+        fitnessClass < candidates.length;
+        fitnessClass += 1
+      ) {
         candidate = candidates[fitnessClass];
 
         if (candidate.demerits < Infinity) {
-          newNode = new LinkedList.Node(breakpoint(index, candidate.demerits, candidate.ratio, candidate.active.data.line + 1, fitnessClass, tmpSum, candidate.active));
+          newNode = new LinkedList.Node(
+            breakpoint(
+              index,
+              candidate.demerits,
+              candidate.ratio,
+              candidate.active.data.line + 1,
+              fitnessClass,
+              tmpSum,
+              candidate.active,
+            ),
+          );
 
           if (active !== null) {
             activeNodes.insertBefore(active, newNode);
@@ -3192,8 +3547,9 @@ const linebreak = (nodes, lines, settings) => {
     }
   } // Add an active node for the start of the paragraph.
 
-
-  activeNodes.push(new LinkedList.Node(breakpoint(0, 0, 0, 0, 0, undefined, null)));
+  activeNodes.push(
+    new LinkedList.Node(breakpoint(0, 0, 0, 0, 0, undefined, null)),
+  );
   nodes.forEach((node, index, nodes) => {
     if (node.type === 'box') {
       sum.width += node.width;
@@ -3221,7 +3577,7 @@ const linebreak = (nodes, lines, settings) => {
     while (tmp !== null) {
       breaks.push({
         position: tmp.data.position,
-        ratio: tmp.data.ratio
+        ratio: tmp.data.ratio,
       });
       tmp = tmp.data.previous;
     }
@@ -3239,21 +3595,21 @@ linebreak.glue = (width, value, stretch, shrink) => ({
   value,
   width,
   stretch,
-  shrink
+  shrink,
 });
 
 linebreak.box = (width, value, hyphenated = false) => ({
   type: 'box',
   width,
   value,
-  hyphenated
+  hyphenated,
 });
 
 linebreak.penalty = (width, penalty, flagged) => ({
   type: 'penalty',
   width,
   penalty,
-  flagged
+  flagged,
 });
 
 const INFINITY = 10000;
@@ -3264,15 +3620,19 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
   const sum = {
     width: 0,
     stretch: 0,
-    shrink: 0
+    shrink: 0,
   };
   const lineLength = widths[Math.min(lineNumber, widths.length - 1)];
 
   const calculateRatio = node => {
     if (sum.width < lineLength) {
-      return sum.stretch - node.stretch > 0 ? (lineLength - sum.width) / sum.stretch : INFINITY;
+      return sum.stretch - node.stretch > 0
+        ? (lineLength - sum.width) / sum.stretch
+        : INFINITY;
     } else if (sum.width > lineLength) {
-      return sum.shrink - node.shrink > 0 ? (lineLength - sum.width) / sum.shrink : INFINITY;
+      return sum.shrink - node.shrink > 0
+        ? (lineLength - sum.width) / sum.shrink
+        : INFINITY;
     }
 
     return 0;
@@ -3310,9 +3670,11 @@ const applyBestFit = (nodes, widths) => {
   let count = 0;
   let lineNumber = 0;
   let subnodes = nodes;
-  const breakpoints = [{
-    position: 0
-  }];
+  const breakpoints = [
+    {
+      position: 0,
+    },
+  ];
 
   while (subnodes.length > 0) {
     const breakpoint = getNextBreakpoint(subnodes, widths, lineNumber);
@@ -3320,7 +3682,7 @@ const applyBestFit = (nodes, widths) => {
     if (breakpoint) {
       count += breakpoint;
       breakpoints.push({
-        position: count
+        position: count,
       });
       subnodes = subnodes.slice(breakpoint + 1, subnodes.length);
       count++;
@@ -3339,19 +3701,15 @@ const TOLERANCE_LIMIT = 50;
 const opts = {
   width: 3,
   stretch: 6,
-  shrink: 9
+  shrink: 9,
 };
-var lineBreaker = (({
-  penalty
-} = {}) => () => {
+var lineBreaker = ({ penalty } = {}) => () => {
   return class KPLineBreaker {
     constructor(tolerance) {
       this.tolerance = tolerance || 4;
     }
 
-    getNodes(glyphString, syllables, {
-      align
-    }) {
+    getNodes(glyphString, syllables, { align }) {
       let start = 0;
       const hyphenWidth = 5;
       const hyphenPenalty = penalty || (align === 'justify' ? 100 : 600);
@@ -3362,12 +3720,12 @@ var lineBreaker = (({
 
         if (syllable.string.trim() === '') {
           const width = syllable.advanceWidth;
-          const stretch = width * opts.width / opts.stretch;
-          const shrink = width * opts.width / opts.shrink;
+          const stretch = (width * opts.width) / opts.stretch;
+          const shrink = (width * opts.width) / opts.shrink;
           const value = {
             value: syllable,
             start,
-            end: start + syllable.end
+            end: start + syllable.end,
           };
           acc.push(linebreak.glue(width, value, stretch, shrink));
         } else {
@@ -3375,7 +3733,7 @@ var lineBreaker = (({
           const value = {
             value: syllable,
             start,
-            end: start + syllable.end
+            end: start + syllable.end,
           };
           acc.push(linebreak.box(syllable.advanceWidth, value, hyphenated));
 
@@ -3414,7 +3772,10 @@ var lineBreaker = (({
         start = end;
         return [...acc, line];
       }, []);
-      const lastLine = glyphString.slice(start, glyphString.glyphIndexForStringIndex(glyphString.string.length));
+      const lastLine = glyphString.slice(
+        start,
+        glyphString.glyphIndexForStringIndex(glyphString.string.length),
+      );
       lines.push(lastLine);
       return lines;
     }
@@ -3423,55 +3784,53 @@ var lineBreaker = (({
       const nodes = this.getNodes(glyphString, syllables, paragraphStyle);
       let tolerance = this.tolerance;
       let breaks = linebreak(nodes, availableWidths, {
-        tolerance
+        tolerance,
       }); // Try again with a higher tolerance if the line breaking failed.
 
       while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
         tolerance += TOLERANCE_STEPS;
         breaks = linebreak(nodes, availableWidths, {
-          tolerance
+          tolerance,
         });
       }
 
-      if (breaks.length === 0 || breaks.length === 1 && breaks[0].position === 0) {
+      if (
+        breaks.length === 0 ||
+        (breaks.length === 1 && breaks[0].position === 0)
+      ) {
         breaks = applyBestFit(nodes, availableWidths);
       }
 
       return this.breakLines(glyphString, nodes, breaks.slice(1));
     }
-
   };
-});
+};
 
 const shrinkWhitespaceFactor = {
   before: -0.5,
-  after: -0.5
+  after: -0.5,
 };
 class LayoutEngine extends textkitCore.LayoutEngine {
-  constructor({
-    hyphenationCallback,
-    hyphenationPenalty
-  }) {
+  constructor({ hyphenationCallback, hyphenationPenalty }) {
     const engines = {
       scriptItemizer: scriptItemizer(),
       decorationEngine: textDecorationEngine(),
       fontSubstitutionEngine: fontSubstitutionEngine(),
       wordHyphenation: wordHyphenation({
-        hyphenationCallback
+        hyphenationCallback,
       }),
       lineBreaker: lineBreaker({
-        penalty: hyphenationPenalty
+        penalty: hyphenationPenalty,
       }),
       justificationEngine: justificationEngine({
-        shrinkWhitespaceFactor
-      })
+        shrinkWhitespaceFactor,
+      }),
     };
     super(engines);
   }
-
 }
 
-PNG.isValid = function (data) {
+PNG.isValid = function(data) {
   try {
     return !!new PNG(data);
   } catch (e) {
@@ -3480,7 +3839,23 @@ PNG.isValid = function (data) {
 };
 
 // Extracted from https://github.com/devongovett/pdfkit/blob/master/lib/image/jpeg.coffee
-const MARKERS = [0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc5, 0xffc6, 0xffc7, 0xffc8, 0xffc9, 0xffca, 0xffcb, 0xffcc, 0xffcd, 0xffce, 0xffcf];
+const MARKERS = [
+  0xffc0,
+  0xffc1,
+  0xffc2,
+  0xffc3,
+  0xffc5,
+  0xffc6,
+  0xffc7,
+  0xffc8,
+  0xffc9,
+  0xffca,
+  0xffcb,
+  0xffcc,
+  0xffcd,
+  0xffce,
+  0xffcf,
+];
 
 class JPEG {
   constructor(data) {
@@ -3516,10 +3891,9 @@ class JPEG {
     pos += 2;
     this.width = data.readUInt16BE(pos);
   }
-
 }
 
-JPEG.isValid = function (data) {
+JPEG.isValid = function(data) {
   if (!data || !Buffer.isBuffer(data) || data.readUInt16BE(0) !== 0xffd8) {
     return false;
   }
@@ -3553,7 +3927,9 @@ class GIF {
     this.height = null;
 
     if (data[0] !== 71 || data[1] !== 73 || data[2] !== 70) {
-      throw new TypeError('Image passed to GIF decoder appears not to be in GIF format');
+      throw new TypeError(
+        'Image passed to GIF decoder appears not to be in GIF format',
+      );
     }
     /*
     const reader = new GifReader(Buffer.from(data));
@@ -3562,24 +3938,21 @@ class GIF {
      this.data = pixels;
     this.width = reader.width;
     this.height = reader.height; */
-
   }
-
 }
 
-GIF.isValid = function (data) {
+GIF.isValid = function(data) {
   try {
-    return data[0] === 71 && data[1] === 73 && data[2] === 70
-    /* && !!new GIF(data) */
-    ;
+    return (
+      data[0] === 71 && data[1] === 73 && data[2] === 70
+      /* && !!new GIF(data) */
+    );
   } catch (e) {
     return false;
   }
 };
 
-const createCache = ({
-  limit = 100
-} = {}) => {
+const createCache = ({ limit = 100 } = {}) => {
   let cache = {};
   let keys = [];
   return {
@@ -3597,77 +3970,76 @@ const createCache = ({
       cache = {};
       keys = [];
     },
-    length: () => keys.length
+    length: () => keys.length,
   };
 };
 
 /* global File */
 
-const toBuffer = blob => new Promise((resolve, reject) => toBufferCb(blob, (err, buffer) => err ? reject(err) : resolve(buffer)));
-
 const IMAGE_CACHE = createCache({
-  limit: 30
+  limit: 30,
 });
 const getAbsoluteLocalPath = src => {
-
-  const {
-    protocol,
-    auth,
-    host,
-    port,
-    hostname,
-    path: pathname
-  } = url.parse(src);
+  const { protocol, auth, host, port, hostname, path: pathname } = url.parse(
+    src,
+  );
   const absolutePath = path.resolve(pathname);
 
-  if (protocol && protocol !== 'file:' || auth || host || port || hostname) {
+  if ((protocol && protocol !== 'file:') || auth || host || port || hostname) {
     return undefined;
   }
 
   return absolutePath;
 };
-const isDangerousLocalPath = (filename, {
-  safePath = './public'
-} = {}) => {
-
+const isDangerousLocalPath = (filename, { safePath = './public' } = {}) => {
   const absoluteSafePath = path.resolve(safePath);
   const absoluteFilePath = path.resolve(filename);
   return !absoluteFilePath.startsWith(absoluteSafePath);
 };
 
-const fetchLocalFile = (src, {
-  safePath,
-  allowDangerousPaths = false
-} = {}) => new Promise((resolve, reject) => {
-  try {
+const fetchLocalFile = (src, { safePath, allowDangerousPaths = false } = {}) =>
+  new Promise((resolve, reject) => {
+    try {
+      if (false) {
+        return reject(new Error('Cannot fetch local file in this environemnt'));
+      }
 
-    const absolutePath = getAbsoluteLocalPath(src);
+      const absolutePath = getAbsoluteLocalPath(src);
 
-    if (!absolutePath) {
-      return reject(new Error(`Cannot fetch non-local path: ${src}`));
+      if (!absolutePath) {
+        return reject(new Error(`Cannot fetch non-local path: ${src}`));
+      }
+
+      if (
+        !allowDangerousPaths &&
+        isDangerousLocalPath(absolutePath, {
+          safePath,
+        })
+      ) {
+        return reject(new Error(`Cannot fetch dangerous local path: ${src}`));
+      }
+
+      fs.readFile(absolutePath, (err, data) =>
+        err ? reject(err) : resolve(data),
+      );
+    } catch (err) {
+      reject(err);
     }
-
-    if (!allowDangerousPaths && isDangerousLocalPath(absolutePath, {
-      safePath
-    })) {
-      return reject(new Error(`Cannot fetch dangerous local path: ${src}`));
-    }
-
-    fs.readFile(absolutePath, (err, data) => err ? reject(err) : resolve(data));
-  } catch (err) {
-    reject(err);
-  }
-});
+  });
 
 const fetchRemoteFile = async (uri, options) => {
   const response = await fetch(uri, options);
-  const buffer = await (response.buffer ? response.buffer() : response.arrayBuffer());
+  const buffer = await (response.buffer
+    ? response.buffer()
+    : response.arrayBuffer());
   return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
 };
 
 const isValidFormat = format => {
   const lower = format.toLowerCase();
-  return lower === 'jpg' || lower === 'jpeg' || lower === 'png' || lower === 'gif';
+  return (
+    lower === 'jpg' || lower === 'jpeg' || lower === 'png' || lower === 'gif'
+  );
 };
 
 const guessFormat = buffer => {
@@ -3684,9 +4056,8 @@ const guessFormat = buffer => {
   return format;
 };
 
-const isCompatibleBase64 = ({
-  uri
-}) => /^data:image\/[a-zA-Z]*;base64,[^"]*/.test(uri);
+const isCompatibleBase64 = ({ uri }) =>
+  /^data:image\/[a-zA-Z]*;base64,[^"]*/.test(uri);
 
 const getImage = async (body, extension) => {
   switch (extension.toLowerCase()) {
@@ -3697,26 +4068,16 @@ const getImage = async (body, extension) => {
     case 'png':
       return new PNG(body);
 
-    case 'gif':
-      {
-        throw new Error('Cannot render GIF images outside a browser environment');
-      }
-
-      const jpeg = await jpegasus.compress(new File([toArrayBuffer(body)], 'image.gif', {
-        type: 'image/gif'
-      }), {
-        quality: 0.8
-      }).then(blob => toBuffer(blob));
-      return new JPEG(jpeg);
+    case 'gif': {
+      throw new Error('Cannot render GIF images outside a browser environment');
+    }
 
     default:
       return null;
   }
 };
 
-const resolveBase64Image = ({
-  uri
-}) => {
+const resolveBase64Image = ({ uri }) => {
   const [, format, data] = /^data:image\/([a-zA-Z]*);base64,([^"]*)/.exec(uri);
 
   if (!isValidFormat(format)) {
@@ -3743,7 +4104,15 @@ const resolveBufferImage = buffer => {
 };
 
 const getImageFormat = body => {
-  const isPng = body[0] === 137 && body[1] === 80 && body[2] === 78 && body[3] === 71 && body[4] === 13 && body[5] === 10 && body[6] === 26 && body[7] === 10;
+  const isPng =
+    body[0] === 137 &&
+    body[1] === 80 &&
+    body[2] === 78 &&
+    body[3] === 71 &&
+    body[4] === 13 &&
+    body[5] === 10 &&
+    body[6] === 26 &&
+    body[7] === 10;
   const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255; // based on https://github.com/sindresorhus/file-type/blob/master/index.js#L65
 
   const isGif = body[0] === 71 && body[1] === 73 && body[2] === 70;
@@ -3763,25 +4132,19 @@ const getImageFormat = body => {
 };
 
 const resolveImageFromUrl = async (src, options) => {
-  const {
-    uri,
-    body,
-    headers,
-    method = 'GET'
-  } = src;
-  const data = getAbsoluteLocalPath(uri) ? await fetchLocalFile(uri, options) : await fetchRemoteFile(uri, {
-    body,
-    headers,
-    method
-  });
+  const { uri, body, headers, method = 'GET' } = src;
+  const data = getAbsoluteLocalPath(uri)
+    ? await fetchLocalFile(uri, options)
+    : await fetchRemoteFile(uri, {
+        body,
+        headers,
+        method,
+      });
   const extension = getImageFormat(data);
   return getImage(data, extension);
 };
 
-const resolveImage = (src, {
-  cache = true,
-  ...options
-} = {}) => {
+const resolveImage = (src, { cache = true, ...options } = {}) => {
   const cacheKey = src.data ? src.data.toString() : src.uri;
 
   if (cache && IMAGE_CACHE.get(cacheKey)) {
@@ -3816,8 +4179,11 @@ const resolveImage = (src, {
 const emojis = {};
 const regex = emojiRegex();
 
-const reflect = promise => (...args) => promise(...args).then(v => v, e => e); // Returns a function to be able to mock resolveImage.
-
+const reflect = promise => (...args) =>
+  promise(...args).then(
+    v => v,
+    e => e,
+  ); // Returns a function to be able to mock resolveImage.
 
 const makeFetchEmojiImage = () => reflect(resolveImage);
 /**
@@ -3831,16 +4197,16 @@ const makeFetchEmojiImage = () => reflect(resolveImage);
  * url will be incorect.
  */
 
-
 const _removeNoColor = x => x !== '️';
 
-const getCodePoints = string => Array.from(string).filter(_removeNoColor).map(char => char.codePointAt(0).toString(16)).join('-');
+const getCodePoints = string =>
+  Array.from(string)
+    .filter(_removeNoColor)
+    .map(char => char.codePointAt(0).toString(16))
+    .join('-');
 
 const buildEmojiUrl = emoji => {
-  const {
-    url,
-    format
-  } = Font$1.getEmojiSource();
+  const { url, format } = Font$1.getEmojiSource();
   return `${url}${getCodePoints(emoji)}.${format}`;
 };
 
@@ -3850,21 +4216,23 @@ const fetchEmojis = string => {
   const promises = [];
   let match;
 
-  while (match = regex.exec(string)) {
+  while ((match = regex.exec(string))) {
     const emoji = match[0];
 
     if (!emojis[emoji] || emojis[emoji].loading) {
       const emojiUrl = buildEmojiUrl(emoji);
       emojis[emoji] = {
-        loading: true
+        loading: true,
       };
       const fetchEmojiImage = makeFetchEmojiImage();
-      promises.push(fetchEmojiImage({
-        uri: emojiUrl
-      }).then(image => {
-        emojis[emoji].loading = false;
-        emojis[emoji].data = image.data;
-      }));
+      promises.push(
+        fetchEmojiImage({
+          uri: emojiUrl,
+        }).then(image => {
+          emojis[emoji].loading = false;
+          emojis[emoji].data = image.data;
+        }),
+      );
     }
   }
 
@@ -3878,7 +4246,7 @@ const embedEmojis = fragments => {
     let match;
     let lastIndex = 0;
 
-    while (match = regex.exec(fragment.string)) {
+    while ((match = regex.exec(fragment.string))) {
       const index = match.index;
       const emoji = match[0];
       const emojiSize = fragment.attributes.fontSize;
@@ -3888,18 +4256,19 @@ const embedEmojis = fragments => {
       if (emojis[emoji] && emojis[emoji].data) {
         result.push({
           string: chunk.replace(match, textkitCore.Attachment.CHARACTER),
-          attributes: { ...fragment.attributes,
+          attributes: {
+            ...fragment.attributes,
             attachment: new textkitCore.Attachment(emojiSize, emojiSize, {
               yOffset: Math.floor(emojiSize * 0.1),
-              image: emojis[emoji].data
-            })
-          }
+              image: emojis[emoji].data,
+            }),
+          },
         });
       } else {
         // If no emoji data, we just replace the emoji with a nodef char
         result.push({
           string: chunk.replace(match, String.fromCharCode(0)),
-          attributes: fragment.attributes
+          attributes: fragment.attributes,
         });
       }
 
@@ -3909,7 +4278,7 @@ const embedEmojis = fragments => {
     if (lastIndex < fragment.string.length) {
       result.push({
         string: fragment.string.slice(lastIndex),
-        attributes: fragment.attributes
+        attributes: fragment.attributes,
       });
     }
   }
@@ -3917,25 +4286,29 @@ const embedEmojis = fragments => {
   return result;
 };
 
-const IGNORABLE_CODEPOINTS = [8232, // LINE_SEPARATOR
-8233];
+const IGNORABLE_CODEPOINTS = [
+  8232, // LINE_SEPARATOR
+  8233, // PARAGRAPH_SEPARATOR
+];
 
-const buildSubsetForFont = font => IGNORABLE_CODEPOINTS.reduce((acc, codePoint) => {
-  if (font.hasGlyphForCodePoint && font.hasGlyphForCodePoint(codePoint)) {
-    return acc;
-  }
+const buildSubsetForFont = font =>
+  IGNORABLE_CODEPOINTS.reduce((acc, codePoint) => {
+    if (font.hasGlyphForCodePoint && font.hasGlyphForCodePoint(codePoint)) {
+      return acc;
+    }
 
-  return [...acc, String.fromCharCode(codePoint)];
-}, []);
+    return [...acc, String.fromCharCode(codePoint)];
+  }, []);
 
-const ignoreChars = fragments => fragments.map(fragment => {
-  const charSubset = buildSubsetForFont(fragment.attributes.font);
-  const subsetRegex = new RegExp(charSubset.join('|'));
-  return {
-    string: fragment.string.replace(subsetRegex, ''),
-    attributes: fragment.attributes
-  };
-});
+const ignoreChars = fragments =>
+  fragments.map(fragment => {
+    const charSubset = buildSubsetForFont(fragment.attributes.font);
+    const subsetRegex = new RegExp(charSubset.join('|'));
+    return {
+      string: fragment.string.replace(subsetRegex, ''),
+      attributes: fragment.attributes,
+    };
+  });
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
@@ -3958,9 +4331,12 @@ const transformText = (text, transformation) => {
 };
 
 const getFragments = instance => {
-  if (!instance) return [{
-    string: ''
-  }];
+  if (!instance)
+    return [
+      {
+        string: '',
+      },
+    ];
   let fragments = [];
   const {
     color = 'black',
@@ -3979,14 +4355,14 @@ const getFragments = instance => {
     textDecorationStyle,
     textTransform,
     letterSpacing,
-    opacity
+    opacity,
   } = instance.style;
   instance.children.forEach(child => {
     if (child.value !== null && child.value !== undefined) {
       const obj = Font$1.getFont({
         fontFamily,
         fontWeight,
-        fontStyle
+        fontStyle,
       });
       const font = obj ? obj.data : fontFamily;
       const string = transformText(child.value, textTransform);
@@ -4005,8 +4381,8 @@ const getFragments = instance => {
           underline: textDecoration === 'underline',
           underlineColor: textDecorationColor || color,
           lineHeight: lineHeight ? lineHeight * fontSize : null,
-          yOffset: position === 'relative' ? -top || bottom || 0 : null
-        }
+          yOffset: position === 'relative' ? -top || bottom || 0 : null,
+        },
       });
     } else {
       if (child) {
@@ -4022,14 +4398,16 @@ const getFragments = instance => {
   return fragments;
 };
 const getAttributedString = instance => {
-  return textkitCore.AttributedString.fromFragments(getFragments(instance)).trim();
+  return textkitCore.AttributedString.fromFragments(
+    getFragments(instance),
+  ).trim();
 };
 
 const renderOpts = {
-  outlineLines: false
+  outlineLines: false,
 };
 const PDFRenderer = createPDFRenderer({
-  Rect: textkitCore.Rect
+  Rect: textkitCore.Rect,
 });
 
 class Text extends Base {
@@ -4042,7 +4420,7 @@ class Text extends Base {
     this.attributedString = null;
     this.layoutEngine = new LayoutEngine({
       hyphenationPenalty: props.hyphenationPenalty,
-      hyphenationCallback: Font$1.getHyphenationCallback()
+      hyphenationCallback: Font$1.getHyphenationCallback(),
     });
     this.layout.setMeasureFunc(this.measureText.bind(this));
   }
@@ -4057,7 +4435,9 @@ class Text extends Base {
 
   get lines() {
     if (!this.container) return [];
-    return this.container.blocks.reduce((acc, block) => [...acc, ...block.lines], []).splice(this.start, this.end);
+    return this.container.blocks
+      .reduce((acc, block) => [...acc, ...block.lines], [])
+      .splice(this.start, this.end);
   }
 
   get linesHeight() {
@@ -4130,8 +4510,10 @@ class Text extends Base {
       this.container = container;
     } // Get the total amount of rendered lines
 
-
-    const linesCount = this.container.blocks.reduce((acc, block) => acc + block.lines.length, 0);
+    const linesCount = this.container.blocks.reduce(
+      (acc, block) => acc + block.lines.length,
+      0,
+    );
     this.end = this.props.maxLines || linesCount + 1;
     this.computed = true;
   }
@@ -4140,15 +4522,18 @@ class Text extends Base {
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
       this.layoutText(width);
       return {
-        height: this.style.flexGrow ? NaN : this.linesHeight
+        height: this.style.flexGrow ? NaN : this.linesHeight,
       };
     }
 
-    if (widthMode === Yoga.MEASURE_MODE_AT_MOST || heightMode === Yoga.MEASURE_MODE_AT_MOST) {
+    if (
+      widthMode === Yoga.MEASURE_MODE_AT_MOST ||
+      heightMode === Yoga.MEASURE_MODE_AT_MOST
+    ) {
       this.layoutText(width, height);
       return {
         height: this.linesHeight,
-        width: Math.min(width, this.linesWidth)
+        width: Math.min(width, this.linesWidth),
       };
     }
 
@@ -4158,12 +4543,15 @@ class Text extends Base {
   resolveStyles() {
     const styles = super.resolveStyles(); // Inherit relative positioning for inline childs
 
-    if (this.parent && this.parent.name === 'Text' && this.parent.style.position === 'relative') {
+    if (
+      this.parent &&
+      this.parent.name === 'Text' &&
+      this.parent.style.position === 'relative'
+    ) {
       styles.top = styles.top || this.parent.style.top;
       styles.bottom = styles.bottom || this.parent.style.bottom;
       styles.position = styles.position || 'relative';
     } // Apply default link styles
-
 
     if (this.src) {
       styles.color = styles.color || 'blue';
@@ -4174,10 +4562,7 @@ class Text extends Base {
   }
 
   wrapHeight(height) {
-    const {
-      orphans,
-      widows
-    } = this.props;
+    const { orphans, widows } = this.props;
     const linesQuantity = this.lines.length;
     const sliceHeight = height - this.paddingTop;
     const slicedLine = this.lineIndexAtHeight(sliceHeight);
@@ -4227,24 +4612,26 @@ class Text extends Base {
     // This can happen if measureText was not called by Yoga
 
     if (!this.computed) {
-      this.layoutText(this.width - this.padding.left - this.padding.right, this.height - this.padding.top - this.padding.bottom);
+      this.layoutText(
+        this.width - this.padding.left - this.padding.right,
+        this.height - this.padding.top - this.padding.bottom,
+      );
     } // We translate lines based on Yoga container
 
-
-    const {
-      top,
-      left
-    } = this.getAbsoluteLayout();
+    const { top, left } = this.getAbsoluteLayout();
     const initialX = this.lines[0] ? this.lines[0].rect.y : 0;
     this.lines.forEach(line => {
       line.rect.x += left + this.padding.left;
       line.rect.y += top + this.padding.top - initialX;
     }); // Mock container only with appropiate lines
 
-    const container = { ...this.container,
-      blocks: [{
-        lines: this.lines
-      }]
+    const container = {
+      ...this.container,
+      blocks: [
+        {
+          lines: this.lines,
+        },
+      ],
     }; // Perform actual text rendering on document
 
     new PDFRenderer(this.root.instance, renderOpts).render(container);
@@ -4255,13 +4642,12 @@ class Text extends Base {
 
     this.root.instance.restore();
   }
-
 }
 
 Text.defaultProps = {
   wrap: true,
   widows: 2,
-  orphans: 2
+  orphans: 2,
 };
 
 class Link extends Base {
@@ -4274,17 +4660,11 @@ class Link extends Base {
   }
 
   async render() {
-    const {
-      top,
-      left,
-      width,
-      height
-    } = this.getAbsoluteLayout();
+    const { top, left, width, height } = this.getAbsoluteLayout();
     this.root.instance.link(left, top, width, height, this.src);
     await this.renderChildren();
     if (this.props.debug) this.debug();
   }
-
 }
 
 class Note extends Base {
@@ -4319,14 +4699,10 @@ class Note extends Base {
   }
 
   async render() {
-    const {
-      top,
-      left
-    } = this.getAbsoluteLayout();
+    const { top, left } = this.getAbsoluteLayout();
     const value = this.children[0] ? this.children[0].value : '';
     this.root.instance.note(left, top, 0, 0, value);
   }
-
 }
 
 Note.defaultProps = {};
@@ -4352,7 +4728,7 @@ const applyContainObjectFit = (cw, ch, iw, ih, px, py) => {
       width,
       height,
       xOffset,
-      yOffset
+      yOffset,
     };
   } else {
     const width = cw;
@@ -4363,7 +4739,7 @@ const applyContainObjectFit = (cw, ch, iw, ih, px, py) => {
       width,
       height,
       yOffset,
-      xOffset
+      xOffset,
     };
   }
 };
@@ -4381,7 +4757,7 @@ const applyNoneObjectFit = (cw, ch, iw, ih, px, py) => {
     width,
     height,
     xOffset,
-    yOffset
+    yOffset,
   };
 };
 
@@ -4402,7 +4778,7 @@ const applyCoverObjectFit = (cw, ch, iw, ih, px, py) => {
       width,
       height,
       yOffset,
-      xOffset
+      xOffset,
     };
   } else {
     const height = ch;
@@ -4413,7 +4789,7 @@ const applyCoverObjectFit = (cw, ch, iw, ih, px, py) => {
       width,
       height,
       xOffset,
-      yOffset
+      yOffset,
     };
   }
 };
@@ -4421,7 +4797,9 @@ const applyCoverObjectFit = (cw, ch, iw, ih, px, py) => {
 const applyScaleDownObjectFit = (cw, ch, iw, ih, px, py) => {
   const containDimension = applyContainObjectFit(cw, ch, iw, ih, px, py);
   const noneDimension = applyNoneObjectFit(cw, ch, iw, ih, px, py);
-  return containDimension.width < noneDimension.width ? containDimension : noneDimension;
+  return containDimension.width < noneDimension.width
+    ? containDimension
+    : noneDimension;
 };
 
 const applyFillObjectFit = (cw, ch, px, py) => {
@@ -4429,7 +4807,7 @@ const applyFillObjectFit = (cw, ch, px, py) => {
     width: cw,
     height: ch,
     xOffset: matchPercent(px) ? 0 : px || 0,
-    yOffset: matchPercent(py) ? 0 : py || 0
+    yOffset: matchPercent(py) ? 0 : py || 0,
   };
 };
 
@@ -4472,50 +4850,70 @@ class Image extends Base {
   measureImage(width, widthMode, height, heightMode) {
     const imageMargin = this.margin;
     const pagePadding = this.page.padding;
-    const pageArea = this.page.size.height - pagePadding.top - pagePadding.bottom - imageMargin.top - imageMargin.bottom - SAFETY_HEIGHT; // Skip measure if image data not present yet
+    const pageArea =
+      this.page.size.height -
+      pagePadding.top -
+      pagePadding.bottom -
+      imageMargin.top -
+      imageMargin.bottom -
+      SAFETY_HEIGHT; // Skip measure if image data not present yet
 
-    if (!this.image) return {
-      width: 0,
-      height: 0
-    };
+    if (!this.image)
+      return {
+        width: 0,
+        height: 0,
+      };
 
-    if (widthMode === Yoga.MEASURE_MODE_EXACTLY && heightMode === Yoga.MEASURE_MODE_UNDEFINED) {
+    if (
+      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
+      heightMode === Yoga.MEASURE_MODE_UNDEFINED
+    ) {
       const scaledHeight = width / this.ratio;
       return {
-        height: Math.min(pageArea, scaledHeight)
+        height: Math.min(pageArea, scaledHeight),
       };
     }
 
-    if (heightMode === Yoga.MEASURE_MODE_EXACTLY && (widthMode === Yoga.MEASURE_MODE_AT_MOST || widthMode === Yoga.MEASURE_MODE_UNDEFINED)) {
+    if (
+      heightMode === Yoga.MEASURE_MODE_EXACTLY &&
+      (widthMode === Yoga.MEASURE_MODE_AT_MOST ||
+        widthMode === Yoga.MEASURE_MODE_UNDEFINED)
+    ) {
       return {
-        width: Math.min(height * this.ratio, width)
+        width: Math.min(height * this.ratio, width),
       };
     }
 
-    if (widthMode === Yoga.MEASURE_MODE_EXACTLY && heightMode === Yoga.MEASURE_MODE_AT_MOST) {
+    if (
+      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
+      heightMode === Yoga.MEASURE_MODE_AT_MOST
+    ) {
       const scaledHeight = width / this.ratio;
       return {
-        height: Math.min(height, pageArea, scaledHeight)
+        height: Math.min(height, pageArea, scaledHeight),
       };
     }
 
-    if (widthMode === Yoga.MEASURE_MODE_AT_MOST && heightMode === Yoga.MEASURE_MODE_AT_MOST) {
+    if (
+      widthMode === Yoga.MEASURE_MODE_AT_MOST &&
+      heightMode === Yoga.MEASURE_MODE_AT_MOST
+    ) {
       if (this.ratio > 1) {
         return {
           width: width,
-          height: Math.min(width / this.ratio, height)
+          height: Math.min(width / this.ratio, height),
         };
       } else {
         return {
           width: Math.min(height * this.ratio, width),
-          height: height
+          height: height,
         };
       }
     }
 
     return {
       height,
-      width
+      width,
     };
   }
 
@@ -4525,17 +4923,15 @@ class Image extends Base {
 
   get src() {
     const src = this.props.src || this.props.source;
-    return typeof src === 'string' ? {
-      uri: src
-    } : src;
+    return typeof src === 'string'
+      ? {
+          uri: src,
+        }
+      : src;
   }
 
   async fetch() {
-    const {
-      cache,
-      safePath,
-      allowDangerousPaths
-    } = this.props;
+    const { cache, safePath, allowDangerousPaths } = this.props;
 
     if (!this.src) {
       warning(false, 'Image should receive either a "src" or "source" prop');
@@ -4546,12 +4942,12 @@ class Image extends Base {
       this.image = await resolveImage(this.src, {
         cache,
         safePath,
-        allowDangerousPaths
+        allowDangerousPaths,
       });
     } catch (e) {
       this.image = {
         width: 0,
-        height: 0
+        height: 0,
       };
       console.warn(e.message);
     }
@@ -4569,34 +4965,40 @@ class Image extends Base {
 
   renderImage() {
     const padding = this.padding;
-    const {
-      left,
-      top
-    } = this.getAbsoluteLayout();
-    const {
-      opacity,
-      objectPositionX,
-      objectPositionY
-    } = this.style;
+    const { left, top } = this.getAbsoluteLayout();
+    const { opacity, objectPositionX, objectPositionY } = this.style;
     this.root.instance.save(); // Clip path to keep image inside border radius
 
     this.clip();
 
     if (this.image.data) {
-      const {
-        width,
-        height,
-        xOffset,
-        yOffset
-      } = resolveObjectFit(this.style.objectFit, this.width - padding.left - padding.right, this.height - padding.top - padding.bottom, this.image.width, this.image.height, objectPositionX, objectPositionY);
+      const { width, height, xOffset, yOffset } = resolveObjectFit(
+        this.style.objectFit,
+        this.width - padding.left - padding.right,
+        this.height - padding.top - padding.bottom,
+        this.image.width,
+        this.image.height,
+        objectPositionX,
+        objectPositionY,
+      );
 
       if (width !== 0 && height !== 0) {
-        this.root.instance.fillOpacity(opacity).image(this.image.data, left + padding.left + xOffset, top + padding.top + yOffset, {
-          width,
-          height
-        });
+        this.root.instance
+          .fillOpacity(opacity)
+          .image(
+            this.image.data,
+            left + padding.left + xOffset,
+            top + padding.top + yOffset,
+            {
+              width,
+              height,
+            },
+          );
       } else {
-        warning(false, `Image with src '${this.props.src}' skipped due to invalid dimensions`);
+        warning(
+          false,
+          `Image with src '${this.props.src}' skipped due to invalid dimensions`,
+        );
       }
     }
 
@@ -4616,13 +5018,12 @@ class Image extends Base {
 
     this.root.instance.restore();
   }
-
 }
 
 Image.defaultProps = {
   wrap: false,
   cache: true,
-  style: {}
+  style: {},
 };
 
 class Document {
@@ -4650,14 +5051,7 @@ class Document {
   }
 
   addMetaData() {
-    const {
-      title,
-      author,
-      subject,
-      keywords,
-      creator,
-      producer
-    } = this.props; // The object keys need to start with a capital letter by the PDF spec
+    const { title, author, subject, keywords, creator, producer } = this.props; // The object keys need to start with a capital letter by the PDF spec
 
     if (title) this.root.instance.info.Title = title;
     if (author) this.root.instance.info.Author = author;
@@ -4672,21 +5066,30 @@ class Document {
     const listToExplore = this.children.map(node => [node, {}]);
 
     while (listToExplore.length > 0) {
-      const [node, {
-        parentStyle = {}
-      }] = listToExplore.shift();
+      const [node, { parentStyle = {} }] = listToExplore.shift();
 
       if (typeof node === 'string') {
-        promises.push(...fetchEmojis(node), Font$1.load(parentStyle, this.root.instance, node));
+        promises.push(
+          ...fetchEmojis(node),
+          Font$1.load(parentStyle, this.root.instance, node),
+        );
       } else if (typeof node.value === 'string') {
-        promises.push(...fetchEmojis(node.value), Font$1.load(node.style || parentStyle, this.root.instance, node.value));
+        promises.push(
+          ...fetchEmojis(node.value),
+          Font$1.load(
+            node.style || parentStyle,
+            this.root.instance,
+            node.value,
+          ),
+        );
       } else if (node.children) {
         node.children.forEach(childNode => {
-          listToExplore.push([childNode, {
-            parentStyle: { ...parentStyle,
-              ...node.style
-            }
-          }]);
+          listToExplore.push([
+            childNode,
+            {
+              parentStyle: { ...parentStyle, ...node.style },
+            },
+          ]);
         });
       }
     }
@@ -4730,7 +5133,7 @@ class Document {
   getLayoutData() {
     return {
       type: this.name,
-      children: this.subpages.map(c => c.getLayoutData())
+      children: this.subpages.map(c => c.getLayoutData()),
     };
   }
 
@@ -4759,10 +5162,13 @@ class Document {
 
     for (let j = 0; j < this.subpages.length; j++) {
       // Update dynamic text nodes with total pages info
-      this.subpages[j].renderDynamicNodes({
-        pageNumber: j + 1,
-        totalPages: this.subpages.length
-      }, node => node.name === 'Text');
+      this.subpages[j].renderDynamicNodes(
+        {
+          pageNumber: j + 1,
+          totalPages: this.subpages.length,
+        },
+        node => node.name === 'Text',
+      );
       await this.subpages[j].render();
     }
 
@@ -4781,25 +5187,62 @@ class Document {
       throw e;
     }
   }
-
 }
 
 Document.defaultProps = {
   author: null,
   keywords: null,
   subject: null,
-  title: null
+  title: null,
 };
 
-const availableMethods = ['dash', 'clip', 'save', 'path', 'fill', 'font', 'text', 'rect', 'scale', 'moveTo', 'lineTo', 'stroke', 'rotate', 'circle', 'lineCap', 'opacity', 'ellipse', 'polygon', 'restore', 'lineJoin', 'fontSize', 'fillColor', 'lineWidth', 'translate', 'miterLimit', 'strokeColor', 'fillOpacity', 'roundedRect', 'strokeOpacity', 'bezierCurveTo', 'quadraticCurveTo', 'linearGradient', 'radialGradient'];
+const availableMethods = [
+  'dash',
+  'clip',
+  'save',
+  'path',
+  'fill',
+  'font',
+  'text',
+  'rect',
+  'scale',
+  'moveTo',
+  'lineTo',
+  'stroke',
+  'rotate',
+  'circle',
+  'lineCap',
+  'opacity',
+  'ellipse',
+  'polygon',
+  'restore',
+  'lineJoin',
+  'fontSize',
+  'fillColor',
+  'lineWidth',
+  'translate',
+  'miterLimit',
+  'strokeColor',
+  'fillOpacity',
+  'roundedRect',
+  'strokeOpacity',
+  'bezierCurveTo',
+  'quadraticCurveTo',
+  'linearGradient',
+  'radialGradient',
+];
 
-const painter = function (instance) {
-  const p = availableMethods.reduce((acc, prop) => ({ ...acc,
-    [prop]: (...args) => {
-      instance[prop](...args);
-      return p;
-    }
-  }), {});
+const painter = function(instance) {
+  const p = availableMethods.reduce(
+    (acc, prop) => ({
+      ...acc,
+      [prop]: (...args) => {
+        instance[prop](...args);
+        return p;
+      },
+    }),
+    {},
+  );
   return p;
 };
 
@@ -4809,24 +5252,29 @@ class Canvas extends Base {
   }
 
   async render() {
-    const {
-      left,
-      top,
-      width,
-      height
-    } = this.getAbsoluteLayout();
+    const { left, top, width, height } = this.getAbsoluteLayout();
     const availableWidth = width - this.paddingLeft - this.paddingRight;
     const availableHeight = height - this.paddingTop - this.paddingBottom;
-    warning(availableWidth && availableHeight, 'Canvas element has null width or height. Please provide valid values via the `style` prop in order to correctly render it.');
+    warning(
+      availableWidth && availableHeight,
+      'Canvas element has null width or height. Please provide valid values via the `style` prop in order to correctly render it.',
+    );
     this.root.instance.save();
     this.applyTransformations();
     this.drawBackgroundColor();
     this.drawBorders();
     this.clip();
-    this.root.instance.translate(left + this.paddingLeft, top + this.paddingTop);
+    this.root.instance.translate(
+      left + this.paddingLeft,
+      top + this.paddingTop,
+    );
 
     if (this.props.paint) {
-      this.props.paint(painter(this.root.instance), availableWidth, availableHeight);
+      this.props.paint(
+        painter(this.root.instance),
+        availableWidth,
+        availableHeight,
+      );
     }
 
     this.root.instance.restore();
@@ -4835,12 +5283,11 @@ class Canvas extends Base {
       this.debug();
     }
   }
-
 }
 
 Canvas.defaultProps = {
   style: {},
-  wrap: false
+  wrap: false,
 };
 
 const constructors = {
@@ -4853,14 +5300,11 @@ const constructors = {
   IMAGE: Image,
   CANVAS: Canvas,
   DOCUMENT: Document,
-  TEXT_INSTANCE: TextInstance
+  TEXT_INSTANCE: TextInstance,
 };
 
 function createInstance(element, root) {
-  const {
-    type,
-    props = {}
-  } = element;
+  const { type, props = {} } = element;
 
   if (constructors[type]) {
     return new constructors[type](root, props);
@@ -4889,14 +5333,21 @@ const propsEqual = (a, b) => {
     }
 
     if (propName !== 'children' && a[propName] !== b[propName]) {
-      if (typeof a[propName] === 'object' && typeof b[propName] === 'object' && propsEqual(a[propName], b[propName])) {
+      if (
+        typeof a[propName] === 'object' &&
+        typeof b[propName] === 'object' &&
+        propsEqual(a[propName], b[propName])
+      ) {
         continue;
       }
 
       return false;
     }
 
-    if (propName === 'children' && (typeof a[propName] === 'string' || typeof b[propName] === 'string')) {
+    if (
+      propName === 'children' &&
+      (typeof a[propName] === 'string' || typeof b[propName] === 'string')
+    ) {
       return a[propName] === b[propName];
     }
   }
@@ -4907,7 +5358,12 @@ const propsEqual = (a, b) => {
 const emptyObject = {}; // If the Link has a strign child or render prop, substitute the instance by a Text,
 // that will ultimately render the inline Link via the textkit PDF renderer.
 
-const shouldReplaceLink = (type, props) => type === 'LINK' && (typeof props.children === 'string' || typeof props.children === 'number' || Array.isArray(props.children) || props.render);
+const shouldReplaceLink = (type, props) =>
+  type === 'LINK' &&
+  (typeof props.children === 'string' ||
+    typeof props.children === 'number' ||
+    Array.isArray(props.children) ||
+    props.render);
 
 const PDFRenderer$1 = ReactFiberReconciler({
   supportsMutation: true,
@@ -4918,17 +5374,23 @@ const PDFRenderer$1 = ReactFiberReconciler({
 
   createInstance(type, props, internalInstanceHandle) {
     const instanceType = shouldReplaceLink(type, props) ? 'TEXT' : type;
-    return createInstance({
-      type: instanceType,
-      props
-    }, internalInstanceHandle);
+    return createInstance(
+      {
+        type: instanceType,
+        props,
+      },
+      internalInstanceHandle,
+    );
   },
 
   createTextInstance(text, rootContainerInstance) {
-    return createInstance({
-      type: 'TEXT_INSTANCE',
-      props: text
-    }, rootContainerInstance);
+    return createInstance(
+      {
+        type: 'TEXT_INSTANCE',
+        props: text,
+      },
+      rootContainerInstance,
+    );
   },
 
   finalizeInitialChildren(element, type, props) {
@@ -4939,17 +5401,20 @@ const PDFRenderer$1 = ReactFiberReconciler({
     return instance;
   },
 
-  prepareForCommit() {// Noop
+  prepareForCommit() {
+    // Noop
   },
 
   prepareUpdate(element, type, oldProps, newProps) {
     return !propsEqual(oldProps, newProps);
   },
 
-  resetAfterCommit() {// Noop
+  resetAfterCommit() {
+    // Noop
   },
 
-  resetTextContent(element) {// Noop
+  resetTextContent(element) {
+    // Noop
   },
 
   getRootHostContext() {
@@ -4993,11 +5458,10 @@ const PDFRenderer$1 = ReactFiberReconciler({
 
   commitUpdate(instance, updatePayload, type, oldProps, newProps) {
     instance.update(newProps);
-  }
-
+  },
 });
 
-var version = "1.4.2";
+var version = '1.4.2';
 
 const View$1 = 'VIEW';
 const Text$1 = 'TEXT';
@@ -5009,7 +5473,7 @@ const Document$1 = 'DOCUMENT';
 
 const pdf = input => {
   const container = createInstance({
-    type: 'ROOT'
+    type: 'ROOT',
   });
   const mountNode = PDFRenderer$1.createContainer(container);
   if (input) updateContainer(input);
@@ -5017,9 +5481,7 @@ const pdf = input => {
   function callOnRender(params = {}) {
     if (container.document.props.onRender) {
       const layoutData = container.document.getLayoutData();
-      container.document.props.onRender({ ...params,
-        layoutData
-      });
+      container.document.props.onRender({ ...params, layoutData });
     }
   }
 
@@ -5039,7 +5501,7 @@ const pdf = input => {
         try {
           const blob = stream.toBlob('application/pdf');
           callOnRender({
-            blob
+            blob,
           });
           resolve(blob);
         } catch (error) {
@@ -5061,12 +5523,12 @@ const pdf = input => {
     container.render();
     return new Promise((resolve, reject) => {
       try {
-        container.instance.on('data', function (buffer) {
+        container.instance.on('data', function(buffer) {
           result += buffer;
         });
-        container.instance.on('end', function () {
+        container.instance.on('end', function() {
           callOnRender({
-            string: result
+            string: result,
           });
           resolve(result);
         });
@@ -5081,14 +5543,14 @@ const pdf = input => {
     updateContainer,
     toBuffer,
     toBlob,
-    toString
+    toString,
   };
 };
 
-const renderToStream = function (element) {
+const renderToStream = function(element) {
   return pdf(element).toBuffer();
 };
-const renderToFile = function (element, filePath, callback) {
+const renderToFile = function(element, filePath, callback) {
   const output = renderToStream(element);
   const stream = fs.createWriteStream(filePath);
   output.pipe(stream);
@@ -5102,7 +5564,9 @@ const renderToFile = function (element, filePath, callback) {
 };
 
 const throwEnvironmentError = name => {
-  throw new Error(`${name} is a web specific API. Or you're either using this component on Node, or your bundler is not loading react-pdf from the appropiate web build.`);
+  throw new Error(
+    `${name} is a web specific API. Or you're either using this component on Node, or your bundler is not loading react-pdf from the appropiate web build.`,
+  );
 };
 
 const PDFViewer = () => {
@@ -5134,27 +5598,27 @@ var node = {
   createInstance,
   renderToStream,
   renderToFile,
-  render
+  render,
 };
 
-exports.renderToStream = renderToStream;
-exports.renderToFile = renderToFile;
-exports.PDFViewer = PDFViewer;
-exports.PDFDownloadLink = PDFDownloadLink;
 exports.BlobProvider = BlobProvider;
-exports.render = render;
+exports.Document = Document$1;
+exports.Font = Font$1;
+exports.Image = Image$1;
+exports.Link = Link$1;
+exports.Note = Note$1;
+exports.PDFDownloadLink = PDFDownloadLink;
+exports.PDFRenderer = PDFRenderer$1;
+exports.PDFViewer = PDFViewer;
+exports.Page = Page$1;
+exports.StyleSheet = StyleSheet;
+exports.Text = Text$1;
+exports.View = View$1;
+exports.createInstance = createInstance;
 exports.default = node;
 exports.pdf = pdf;
-exports.View = View$1;
-exports.Text = Text$1;
-exports.Link = Link$1;
-exports.Page = Page$1;
-exports.Font = Font$1;
-exports.Note = Note$1;
-exports.Image = Image$1;
+exports.render = render;
+exports.renderToFile = renderToFile;
+exports.renderToStream = renderToStream;
 exports.version = version;
-exports.Document = Document$1;
-exports.StyleSheet = StyleSheet;
-exports.PDFRenderer = PDFRenderer$1;
-exports.createInstance = createInstance;
 //# sourceMappingURL=react-pdf.cjs.js.map

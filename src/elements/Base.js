@@ -1,7 +1,7 @@
-import pick from 'lodash.pick';
-import merge from 'lodash.merge';
-import toPairsIn from 'lodash.topairsin';
-import isFunction from 'lodash.isfunction';
+import pick from 'lodash/pick';
+import merge from 'lodash/merge';
+import toPairsIn from 'lodash/topairsin';
+import isFunction from 'lodash/isfunction';
 
 import Node from './Node';
 import StyleSheet from '../stylesheet';
